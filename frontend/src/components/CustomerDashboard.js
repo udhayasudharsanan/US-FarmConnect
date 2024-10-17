@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useCart } from '../context/CartContext'; // Import useCart from CartContext
 import axios from 'axios';
 import socket from '../socket'; // Assuming socket setup
-
+const API_URL = process.env.REACT_APP_BACKEND_URL || 'https://us-farmconnect.onrender.com';
 const CustomerDashboard = () => {
   const [products, setProducts] = useState([]);
   const navigate = useNavigate(); // For navigation
