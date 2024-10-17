@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import socket from '../socket';
 import axios from 'axios';
-
+const API_URL = process.env.REACT_APP_BACKEND_URL || 'https://us-farmconnect.onrender.com';
 const SupportChat = ({ farmerId }) => {
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
