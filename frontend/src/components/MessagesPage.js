@@ -10,7 +10,7 @@ const MessagePage = ({ productId }) => {
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/messages/${productId}`);
+        const response = await axios.get(`${API_URL}/api/messages/${productId}`);
         setMessages(response.data.messages); // Assuming your API returns a messages array
       } catch (error) {
         console.error("Error fetching messages:", error);
@@ -46,7 +46,7 @@ const MessagePage = ({ productId }) => {
 
       // Save the message to the database
       try {
-        await axios.post('http://localhost:5000/api/messages', messageData);
+        await axios.post('${API_URL}/api/messages', messageData);
         setMessages((prevMessages) => [...prevMessages, messageData]); // Update local messages
         setMessage(''); // Clear input field
       } catch (error) {
