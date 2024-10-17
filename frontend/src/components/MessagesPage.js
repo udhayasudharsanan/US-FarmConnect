@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import socket from '../socket';
-
+const API_URL = process.env.REACT_APP_BACKEND_URL || 'https://us-farmconnect.onrender.com';
 const MessagePage = ({ productId }) => {
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState('');
