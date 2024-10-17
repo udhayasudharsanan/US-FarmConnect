@@ -2,22 +2,22 @@ import axios from 'axios';
 const API_URL = process.env.REACT_APP_BACKEND_URL || 'https://us-farmconnect.onrender.com';
 
 export const login = (credentials) => {
-  return axios.post(`${API_URL}/auth/login`, credentials); // Ensure the endpoint is correct
+  return axios.post(`${API_URL}/api/auth/login`, credentials); // Ensure the endpoint is correct
 };
 
 export const signup = (userData) => {
-  return axios.post(`${API_URL}/auth/signup`, userData);
+  return axios.post(`${API_URL}/api/auth/signup`, userData);
 };
 
 export const getProducts = () => {
-  return axios.get(`${API_URL}/products`);
+  return axios.get(`${API_URL}/api/products`);
 };
 
 // Function to add a product
 export const addProduct = async (formData) => {
   const token = localStorage.getItem('token'); // Get the JWT token from local storage (or however you're storing it)
   try {
-    const response = await axios.post(`${API_URL}/products/add`, formData, {
+    const response = await axios.post(`${API_URL}/api/products/add`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
         'Authorization': `Bearer ${token}` // Include the token in the Authorization header
@@ -31,11 +31,11 @@ export const addProduct = async (formData) => {
 };
 
 export const getSupportTickets = () => {
-  return axios.get(`${API_URL}/support`);
+  return axios.get(`${API_URL}/api/support`);
 };
 
 export const submitSupportTicket = (ticketData, token) => {
-  return axios.post(`${API_URL}/support/raise`, ticketData, {
+  return axios.post(`${API_URL}/api/support/raise`, ticketData, {
     headers: {
         Authorization: `Bearer ${token}`, // Include the token in the Authorization header
         'Content-Type': 'multipart/form-data', // Specify content type
