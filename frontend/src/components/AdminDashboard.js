@@ -24,13 +24,13 @@ const AdminDashboard = () => {
   
         const headers = { Authorization: `Bearer ${token}` }; // Pass token consistently in the headers
   
-        const usersResponse = await axios.get('http://localhost:5000/api/admin/users', { headers });
+        const usersResponse = await axios.get('${API_URL}/api/admin/users', { headers });
         setUsers(usersResponse.data);
   
         /* const productsResponse = await axios.get('http://localhost:5000/api/products', { headers });
         setProducts(Array.isArray(productsResponse.data) ? productsResponse.data : []); // Ensure it's an array */
   
-        const supportResponse = await axios.get('http://localhost:5000/api/support', { headers });
+        const supportResponse = await axios.get('${API_URL}/api/support', { headers });
         setSupportTickets(supportResponse.data);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -48,7 +48,7 @@ const AdminDashboard = () => {
       if (!token) {
         throw new Error('Authorization token is missing. Please log in again.');
       }
-      await axios.put(`http://localhost:5000/api/admin/certify-farmer/${farmerId}`, {}, {
+      await axios.put(`${API_URL}/api/admin/certify-farmer/${farmerId}`, {}, {
         headers: { Authorization: `Bearer ${token}` }, // Pass token in the headers
       });
       alert('Farmer certified');
@@ -66,7 +66,7 @@ const AdminDashboard = () => {
       if (!token) {
         throw new Error('Authorization token is missing. Please log in again.');
       }
-      await axios.delete(`http://localhost:5000/api/products/${productId}`, {
+      await axios.delete(`${API_URL}/api/products/${productId}`, {
         headers: { Authorization: `Bearer ${token}` }, // Pass token in the headers
       });
       setProducts(products.filter(product => product._id !== productId));
@@ -98,7 +98,7 @@ const AdminDashboard = () => {
       }
 
       try {
-        const response = await axios.get('http://localhost:5000/api/support/all', {
+        const response = await axios.get('${API_URL}/api/support/all', {
           headers: {
             'Authorization': `Bearer ${token}`,
           },
@@ -126,7 +126,7 @@ const AdminDashboard = () => {
 
 
     try {
-      const response = await axios.put(`http://localhost:5000/api/support/reply/${messageId}`, formData, {
+      const response = await axios.put(`${API_URL}/api/support/reply/${messageId}`, formData, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',  // Send as form-data for possible image uploads
