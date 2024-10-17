@@ -10,7 +10,7 @@ const CustomerChat = ({ productId, customerId }) => {
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/messages/${productId}`);
+        const response = await axios.get(`${API_URL}/api/messages/${productId}`);
         setMessages(response.data.messages);
       } catch (error) {
         console.error("Error fetching messages:", error);
