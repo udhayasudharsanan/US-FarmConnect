@@ -14,6 +14,7 @@ dotenv.config();
 
 const app = express();
 const server = http.createServer(app);
+// Socket.IO with CORS configuration
 const io = socketIo(server, {
     cors: {
         origin: 'https://us-farm-connect.vercel.app', // Your deployed frontend URL
@@ -21,6 +22,14 @@ const io = socketIo(server, {
         credentials: true,
     }
 });
+
+// CORS configuration for Express
+const corsOptions = {
+    origin: 'https://us-farm-connect.vercel.app', // Your deployed frontend URL
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true,
+    optionsSuccessStatus: 200,
+};
 
 // Use CORS middleware
 app.use(cors(corsOptions));
