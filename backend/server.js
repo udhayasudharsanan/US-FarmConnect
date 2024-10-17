@@ -20,13 +20,11 @@ const io = socketIo(server, {
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
 };
-app.use(cors(corsOptions));*/
-
 // Middlewares
  app.use(cors({
-  origin: 'https://us-farm-connect.vercel.app', // Allow requests from your React app
+  origin: 'us-farm-connect.vercel.app', // Allow requests from your React app
   credentials: true,
-})) 
+}))
 app.use(express.json());
 // app.use(express.static('uploads'));
 
