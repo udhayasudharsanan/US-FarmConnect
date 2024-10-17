@@ -21,7 +21,7 @@ const corsOptions = {
   credentials: true,
 };
 // Middlewares
- app.use(cors({
+ app.use(corsOptions({
   origin: 'us-farm-connect.vercel.app', // Allow requests from your React app
   credentials: true,
 }))
