@@ -5,7 +5,7 @@ import FarmerChat from './FarmerChat';
 import SupportChat from './SupportChat'; // Import Support Chat component
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
-
+const API_URL = process.env.REACT_APP_BACKEND_URL || 'https://us-farmconnect.onrender.com';
 const FarmerDashboard = ({ farmerId }) => {
   const [products, setProducts] = useState([]);
   const [name, setName] = useState('');
