@@ -23,7 +23,7 @@ const io = socketIo(server, {
 
 // Middlewares
 app.use(cors({
-  origin: 'http://localhost:3000', // Allow requests from your React app
+  origin: 'us-farm-connect.vercel.app', // Allow requests from your React app
   credentials: true,
 }))
 app.use(express.json());
