@@ -24,7 +24,7 @@ const AdminDashboard = () => {
   
         const headers = { Authorization: `Bearer ${token}` }; // Pass token consistently in the headers
   
-        const usersResponse = await axios.get('http://localhost:5000/api/admin/users', { headers });
+        const usersResponse = await axios.get('${API_URL}/api/admin/users', { headers });
         setUsers(usersResponse.data);
   
         /* const productsResponse = await axios.get('http://localhost:5000/api/products', { headers });
