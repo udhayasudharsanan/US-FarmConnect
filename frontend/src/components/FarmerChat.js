@@ -10,7 +10,7 @@ const FarmerChat = ({ productId, farmerId }) => {
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/messages/${productId}`); // Adjust the API URL as necessary
+        const response = await axios.get(`${API_URL}/api/messages/${productId}`); // Adjust the API URL as necessary
         setMessages(response.data.messages); // Set the fetched messages into state
       } catch (error) {
         console.error("Error fetching messages:", error);

@@ -48,7 +48,7 @@ const CustomerDashboard = () => {
 
     try {
       const response = await axios.post(
-        'http://localhost:5000/api/negotiate', // Adjust the endpoint accordingly
+        '${API_URL}/api/negotiate', // Adjust the endpoint accordingly
         {
           productId,
           message,
