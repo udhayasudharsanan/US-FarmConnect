@@ -1,5 +1,5 @@
 import axios from 'axios';
-const API_URL = 'http://localhost:5000/api';
+const API_URL = process.env.REACT_APP_BACKEND_URL || 'https://us-farmconnect.onrender.com';
 
 export const login = (credentials) => {
   return axios.post(`${API_URL}/auth/login`, credentials); // Ensure the endpoint is correct
