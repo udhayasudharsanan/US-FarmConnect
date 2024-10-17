@@ -14,8 +14,10 @@ dotenv.config();
 
 const app = express();
 const server = http.createServer(app);
-const io = socketIo(server, {
-const cors = {
+const io = socketIo(server);
+
+// CORS configuration
+const corsOptions = {
     origin: 'https://us-farm-connect.vercel.app', // Your deployed frontend URL
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
@@ -23,9 +25,10 @@ const cors = {
 };
 
 // Use CORS middleware
-app.use(cors(cors));
+app.use(cors(corsOptions));
 app.use(express.json());
 // app.use(express.static('uploads'));
+
 
 dotenv.config();
 
