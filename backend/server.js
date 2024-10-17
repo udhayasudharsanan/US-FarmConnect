@@ -15,16 +15,15 @@ dotenv.config();
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
-const cors = {
-  origin: 'https://us-farm-connect.vercel.app',
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true,
+const corsOptions = {
+    origin: 'https://us-farm-connect.vercel.app', // Your deployed frontend URL
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true,
+    optionsSuccessStatus: 200, // For legacy browser support
 };
-// Middlewares
- app.use(cors({
-  origin: 'us-farm-connect.vercel.app', // Allow requests from your React app
-  credentials: true,
-}))
+
+// Use CORS middleware
+app.use(cors(corsOptions));
 app.use(express.json());
 // app.use(express.static('uploads'));
 
