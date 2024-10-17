@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import socket from '../socket';
-
+const API_URL = process.env.REACT_APP_BACKEND_URL || 'https://us-farmconnect.onrender.com';
 const ChatPage = () => {
   const { productId, farmerId } = useParams();
   const [messages, setMessages] = useState([]);
