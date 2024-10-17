@@ -13,7 +13,7 @@ const ChatPage = () => {
     // Fetch previous messages
     const fetchMessages = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/messages/${productId}`);
+        const response = await axios.get(`${API_URL}/api/messages/${productId}`);
         setMessages(response.data.messages);
       } catch (error) {
         console.error('Error fetching messages:', error);
@@ -50,7 +50,7 @@ const ChatPage = () => {
 
       // Save the message to the database
       try {
-        await axios.post('http://localhost:5000/api/messages', messageData);
+        await axios.post('${API_URL}/api/messages', messageData);
         setMessages((prevMessages) => [...prevMessages, messageData]);
         setMessage('');
       } catch (error) {
