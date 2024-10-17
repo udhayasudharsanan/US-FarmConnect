@@ -15,13 +15,13 @@ dotenv.config();
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
-const corsOptions = {
+const cors = {
   origin: 'https://us-farm-connect.vercel.app',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
 };
 // Middlewares
- app.use(corsOptions({
+ app.use(cors({
   origin: 'us-farm-connect.vercel.app', // Allow requests from your React app
   credentials: true,
 }))
