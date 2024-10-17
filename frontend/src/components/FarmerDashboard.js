@@ -23,7 +23,7 @@ const FarmerDashboard = ({ farmerId }) => {
 
     const fetchNegotiationRequests = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/negotiate/requests', {
+        const response = await axios.get('${API_URL}/api/negotiate/requests', {
           headers: {
             Authorization: `Bearer ${token}`, // Add the token in the headers
           },
@@ -52,7 +52,7 @@ const FarmerDashboard = ({ farmerId }) => {
   }
     
     try {
-      const response = await axios.post('http://localhost:5000/api/negotiate/respond', {
+      const response = await axios.post('${API_URL}/api/negotiate/respond', {
         productId,
         newPrice:Number(newPrice) ,
         customerId,
@@ -86,7 +86,7 @@ const FarmerDashboard = ({ farmerId }) => {
     const fetchFarmerProducts = async () => {
       const token = localStorage.getItem('token'); // Get token from local storage
       try {
-        const response = await axios.get('http://localhost:5000/api/products/farmer', {
+        const response = await axios.get('${API_URL}/api/products/farmer', {
           headers: {
             Authorization: `Bearer ${token}`, // Add the token in the headers
           },
@@ -119,7 +119,7 @@ const FarmerDashboard = ({ farmerId }) => {
     const token = localStorage.getItem('token'); // Get token from local storage
 
     try {
-      await axios.post('http://localhost:5000/api/products/add', formData, {
+      await axios.post('${API_URL}/api/products/add', formData, {
         headers: {
           Authorization: `Bearer ${token}`, // Add the token in the headers
         },
