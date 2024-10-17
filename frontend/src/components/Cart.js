@@ -12,7 +12,7 @@ export default function Cart() {
   // Fetch updated cart data after login or negotiation (if needed)
   const fetchUpdatedCart = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/cart', {
+      const response = await axios.get('${API_URL}/api/cart', {
         headers: { Authorization: `Bearer ${token}` },
       });
       setCart(response.data.cart); // Update cart with fetched data
@@ -66,7 +66,7 @@ export default function Cart() {
       }
       
       const response = await axios.post(
-        'http://localhost:5000/api/negotiate',
+        '${API_URL}/api/negotiate',
         { productId, farmerId, message, requestedPrice },  // Send farmerId along with the request
         {
           headers: { Authorization: `Bearer ${token}` },  // Ensure the token is passed in the headers
