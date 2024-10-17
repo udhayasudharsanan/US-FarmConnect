@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import socket from '../socket'; // Ensure you have your socket instance set up
 import axios from 'axios';
-
+const API_URL = process.env.REACT_APP_BACKEND_URL || 'https://us-farmconnect.onrender.com';
 const FarmerChat = ({ productId, farmerId }) => {
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
