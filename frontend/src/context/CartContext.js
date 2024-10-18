@@ -11,7 +11,7 @@ export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
   const token = localStorage.getItem('token'); // Ensure the token is retrieved correctly
   const updateCart = (newCart) => setCart(newCart);  // Make sure `setCart` properly updates the cart
-
+  const API_URL = process.env.REACT_APP_BACKEND_URL || 'https://us-farmconnect.onrender.com';
   // Fetch the cart for the current user
   useEffect(() => {
     const fetchCart = async () => {
