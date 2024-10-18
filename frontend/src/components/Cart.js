@@ -12,7 +12,7 @@ export default function Cart() {
   // Fetch updated cart data after login or negotiation (if needed)
   const fetchUpdatedCart = async () => {
     try {
-      const response = await axios.get('${API_URL}/api/cart', {
+      const response = await axios.get(`${API_URL}/api/cart`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setCart(response.data.cart); // Update cart with fetched data
