@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useCart } from '../context/CartContext';
 import axios from 'axios';
 import socket from '../socket'; // Assuming socket setup
-const API_URL = process.env.REACT_APP_BACKEND_URL || 'https://us-farmconnect.onrender.com';
+
 export default function Cart() {
   const { cart, setCart } = useCart(); // Add setCart to update the cart state
   const [negotiationMessages, setNegotiationMessages] = useState({});
   const [requestedPrices, setRequestedPrices] = useState({});
   const token = localStorage.getItem('token'); // Retrieve the token from localStorage
-
+  const API_URL = process.env.REACT_APP_BACKEND_URL || 'https://us-farmconnect.onrender.com';
   // Fetch updated cart data after login or negotiation (if needed)
   const fetchUpdatedCart = async () => {
     try {
