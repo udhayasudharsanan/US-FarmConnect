@@ -66,7 +66,7 @@ export default function Cart() {
       }
       
       const response = await axios.post(
-        '${API_URL}/api/negotiate',
+        `${API_URL}/api/negotiate`,
         { productId, farmerId, message, requestedPrice },  // Send farmerId along with the request
         {
           headers: { Authorization: `Bearer ${token}` },  // Ensure the token is passed in the headers
