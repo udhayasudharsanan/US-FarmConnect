@@ -215,7 +215,7 @@ const FarmerDashboard = ({ farmerId }) => {
         {products.map(product => (
           <div key={product._id} className="col-md-4">
             <div className="card mb-4" onClick={() => handleProductSelect(product._id)}>
-              <img src={`http://localhost:5000/uploads/${product.image}`} className="card-img-top" alt={product.name} />
+              <img src={`${API_URL}/uploads/${product.image}`} className="card-img-top" alt={product.name} />
               <div className="card-body">
                 <h5 className="card-title">{product.name}</h5>
                 <p className="card-text">Price: ${product.price}</p>
@@ -241,6 +241,7 @@ const FarmerDashboard = ({ farmerId }) => {
         <h2>Negotiation Requests</h2>
         <ul>
   {negotiationRequests.map((request) => (
+  request.productId ? (
     <li key={request._id}>
       <h4>{request.productId.name}</h4>
       <p>Requested Price: ${request.requestedPrice}</p>
@@ -260,7 +261,8 @@ const FarmerDashboard = ({ farmerId }) => {
         Send Negotiated Price
       </button>
     </li>
-  ))}
+  ) : null // Handle case where productId is missing
+))}
 </ul>
 
       </div>
