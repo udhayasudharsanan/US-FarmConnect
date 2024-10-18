@@ -20,7 +20,7 @@ const SupportChat = ({ farmerId }) => {
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-        const response = await axios.get('${API_URL}/api/support/all', {
+        const response = await axios.get(`${API_URL}/api/support/all`, {
           headers: {
             'Authorization': `Bearer ${token}`, // Attach token for authentication
           },
@@ -59,7 +59,7 @@ const SupportChat = ({ farmerId }) => {
     }
 
     try {
-      const response = await axios.post('${API_URL}/api/support/messages', formData, {
+      const response = await axios.post(`${API_URL}/api/support/messages`, formData, {
         headers: {
           'Authorization': `Bearer ${token}`, // Attach token to Authorization header
           'Content-Type': 'multipart/form-data',
@@ -86,7 +86,7 @@ const SupportChat = ({ farmerId }) => {
             {msg.image && (
               <div>
                 <img 
-                  src={`http://localhost:5000/uploads/${msg.image}`} 
+                  src={`${API_URL}/uploads/${msg.image}`} 
                   alt="support-chat-img" 
                   style={{ maxWidth: '100px', marginTop: '5px' }} 
                 />
