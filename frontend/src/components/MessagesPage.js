@@ -46,7 +46,7 @@ const MessagePage = ({ productId }) => {
 
       // Save the message to the database
       try {
-        await axios.post('${API_URL}/api/messages', messageData);
+        await axios.post(`${API_URL}/api/messages`, messageData);
         setMessages((prevMessages) => [...prevMessages, messageData]); // Update local messages
         setMessage(''); // Clear input field
       } catch (error) {
