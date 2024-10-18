@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { getProducts } from '../api';
-const API_URL = process.env.REACT_APP_BACKEND_URL || 'https://us-farmconnect.onrender.com';
+
 const AdminDashboard = () => {
   const [users, setUsers] = useState([]);
   const [products, setProducts] = useState([]);
@@ -12,6 +12,7 @@ const AdminDashboard = () => {
   const [replyMessage, setReplyMessage] = useState('');  // New state for reply input
   const [selectedMessageId, setSelectedMessageId] = useState(null);  // Track which message is selected
   const token = localStorage.getItem('token');
+  const API_URL = process.env.REACT_APP_BACKEND_URL || 'https://us-farmconnect.onrender.com';
   // Fetch users, products, and support tickets on component mount
   useEffect(() => {
     const fetchData = async () => {
@@ -208,7 +209,7 @@ const AdminDashboard = () => {
                 {msg.image && (
                   <div>
                     <img 
-                      src={`http://localhost:5000/uploads/${msg.image}`} 
+                      src={`${API_URL}/uploads/${msg.image}`} 
                       alt="support-chat-img" 
                       style={{ maxWidth: '100px', marginTop: '5px' }} 
                     />
