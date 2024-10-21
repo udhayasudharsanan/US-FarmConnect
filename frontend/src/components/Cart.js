@@ -22,25 +22,7 @@ export default function Cart() {
   };
   const cartItems = await Cart.find({ customerId: req.user.id }).populate('product');
 
-const updatedCart = await Promise.all(
-  cartItems.map(async (item) => {
-    const negotiation = await Negotiation.findOne({
-      productId: item.product._id,
-      customerId: req.user.id,  // Fetch negotiation for this customer
-      status: 'accepted',
-    });
-
-    if (negotiation) {
-      item.price = negotiation.negotiatedPrice;  // Update price if negotiation exists
-    }
-    return item;
-  })
-);
-
-res.json(updatedCart);
-
-
-  // Listen for negotiation updates from the farmer
+ // Listen for negotiation updates from the farmer
   useEffect(() => {
     socket.on('negotiationUpdated', (data) => {
       const { productId, newPrice } = data;
