@@ -20,9 +20,8 @@ export default function Cart() {
       console.error('Error fetching updated cart:', error);
     }
   };
-  const cartItems = await Cart.find({ customerId: req.user.id }).populate('product');
 
- // Listen for negotiation updates from the farmer
+  // Listen for negotiation updates from the farmer
   useEffect(() => {
     socket.on('negotiationUpdated', (data) => {
       const { productId, newPrice } = data;
