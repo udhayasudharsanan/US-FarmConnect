@@ -57,7 +57,8 @@ export default function Cart() {
       alert('Please provide both a message and a requested price.');
       return;
     }
-  
+    const token = localStorage.getItem('token');
+    console.log("Token:", token);  // Check if the token is retrieved
     try {
       // Ensure the token is available
       if (!token) {
