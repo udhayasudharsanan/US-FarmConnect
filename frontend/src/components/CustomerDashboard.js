@@ -151,9 +151,9 @@ const CustomerDashboard = () => {
                           value={negotiationMessages[product._id] || ''}
                           onChange={(e) => handleNegotiationChange(e, product._id)}
                         />
-                        <button className="btn btn-secondary mt-2" onClick={() => sendNegotiation(product._id)}>
-                          Send Negotiation
-                        </button>
+                        <button className="btn btn-secondary mt-2" onClick={() => sendNegotiation(product._id, product.farmer._id)}>
+  Send Negotiation
+</button>
                       </div>
                     )}
                   </div>
