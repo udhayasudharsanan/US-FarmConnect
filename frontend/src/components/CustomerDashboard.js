@@ -11,6 +11,8 @@ const CustomerDashboard = () => {
   const navigate = useNavigate(); // For navigation
   const { addToCart, cart, setCart } = useCart(); // Ensure cart and setCart are available
   const [negotiationMessages, setNegotiationMessages] = useState({});
+  const [requestedPrices, setRequestedPrices] = useState({});
+  const token = localStorage.getItem('token'); // Retrieve the token from localStorage
 
   useEffect(() => {
     const fetchProducts = async () => {
