@@ -40,29 +40,36 @@ const CustomerDashboard = () => {
   };
 
   // Send negotiation request
-  const sendNegotiation = async (productId) => {
+  const sendNegotiation = async (productId, farmerId) => {
     const message = negotiationMessages[productId];
-    if (!message) return alert('Please enter a negotiation message.');
-
-    const token = localStorage.getItem('token'); // Retrieve the token from localStorage
-
+    const requestedPrice = requestedPrices[productId];
+    
+    if (!message || !requestedPrice) {
+      alert('Please provide both a message and a requested price.');
+      return;
+    }
+  
     try {
+      // Ensure the token is available
+      if (!token) {
+        alert('Authorization token is missing. Please log in again.');
+        return;
+      }
+      
       const response = await axios.post(
-        `${API_URL}/api/negotiate`, // Adjust the endpoint accordingly
+        `${API_URL}/api/negotiate`,
+        { productId, farmerId, message, requestedPrice },  // Send farmerId along with the request
         {
-          productId,
-          message,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`, // Ensure the token is passed in the headers
-          },
+          headers: { Authorization: `Bearer ${token}` },  // Ensure the token is passed in the headers
         }
       );
-
+  
       if (response.data.success) {
         alert('Negotiation request sent to the farmer.');
-        setNegotiationMessages((prev) => ({ ...prev, [productId]: '' })); // Clear the message input
+        // Clear the message and requested price after sending
+        setNegotiationMessages((prev) => ({ ...prev, [productId]: '' }));
+        setRequestedPrices((prev) => ({ ...prev, [productId]: '' }));
+        fetchUpdatedCart(); // Fetch the updated cart after negotiation
       } else {
         alert('Failed to send negotiation request. Please try again.');
       }
