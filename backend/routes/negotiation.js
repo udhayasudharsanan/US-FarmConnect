@@ -17,7 +17,8 @@ router.post('/', auth, async (req, res) => {
   if (!customerId) {
     return res.status(400).json({ success: false, message: 'Customer ID is required' });
   }
-
+  // Log productId for debugging
+  console.log("Received productId:", productId);
   try {
     // Fetch the product to get the farmerId
     const product = await Product.findById(productId);
