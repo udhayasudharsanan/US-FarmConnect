@@ -56,7 +56,7 @@ const CustomerDashboard = () => {
   const sendNegotiation = async (productId, farmerId) => {
     const message = negotiationMessages[productId];
     const requestedPrice = requestedPrices[productId];
-    
+    const token = localStorage.getItem('token'); // Retrieve the token from localStorage
     if (!message || !requestedPrice) {
       alert('Please provide both a message and a requested price.');
       return;
