@@ -27,6 +27,17 @@ const CustomerDashboard = () => {
     fetchProducts();
   }, []);
 
+  const fetchUpdatedCart = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/api/cart`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setCart(response.data.cart); // Update cart with fetched data
+    } catch (error) {
+      console.error('Error fetching updated cart:', error);
+    }
+  };
+  
   // Function to add product to the cart
   const handleAddToCart = (product) => {
     addToCart(product); // Add the product to the cart
