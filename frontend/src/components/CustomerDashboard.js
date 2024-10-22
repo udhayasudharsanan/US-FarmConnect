@@ -91,6 +91,7 @@ const CustomerDashboard = () => {
     } catch (error) {
       console.error('Error sending negotiation message:', error);
       alert('Error sending negotiation request. Please check your network and try again.');
+      console.error("Error:", error.response ? error.response.data : error.message);
     }
   };
 
