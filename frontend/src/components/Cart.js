@@ -98,23 +98,23 @@ export default function Cart() {
       ) : (
         <ul>
           {cart.map((item) => (
-  <li key={item._id}>
-    <h4>{item.productName || 'Product Name Missing'}</h4>
-    <p>Price: ${item.price}</p>
-    <p>Quantity: {item.quantity}</p>
+  <li key={product._id}>
+    <h4>{product.productName || 'Product Name Missing'}</h4>
+    <p>Price: ${product.price}</p>
+    <p>Quantity: {product.quantity}</p>
     {item.negotiationStatus === 'accepted' ? (
       <p>Negotiation accepted, price updated.</p>
-    ) : item.quantity >= item.minQuantityForNegotiation ? (
+    ) : product.quantity >= item.minQuantityForNegotiation ? (
                 <div>
                   <textarea
           placeholder="Enter your negotiation message"
-          value={negotiationMessages[item._id] || ''}
+          value={negotiationMessages[product._id] || ''}
           onChange={(e) => handleNegotiationChange(e, product._id)}
         />
                   <input
           type="number"
           placeholder="Enter your requested price"
-          value={requestedPrices[item._id] || ''}
+          value={requestedPrices[product._id] || ''}
           onChange={(e) => handlePriceChange(e, product._id)}
         />
                   <button onClick={() => sendNegotiation(product._id, product.farmer)}> {/* Pass farmerId */}
@@ -122,7 +122,7 @@ export default function Cart() {
                   </button>
                 </div>
               ) : (
-                <p>{item.negotiationStatus === 'accepted' ? 'Negotiation accepted' : `Negotiation not available (min quantity for negotiation: ${item.minQuantityForNegotiation})`}</p>
+                <p>{product.negotiationStatus === 'accepted' ? 'Negotiation accepted' : `Negotiation not available (min quantity for negotiation: ${product.minQuantityForNegotiation})`}</p>
               )}
             </li>
           ))}
