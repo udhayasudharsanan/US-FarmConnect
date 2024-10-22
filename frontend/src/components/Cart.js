@@ -26,7 +26,7 @@ export default function Cart() {
     socket.on('negotiationUpdated', (data) => {
       const { productId, newPrice } = data;
       setCart((prevCart) =>
-        prevCart.map(product => product._id === productId ? { ...item, price: newPrice } : item)
+        prevCart.map(product => product._id === productId ? { ...product, price: newPrice } : product)
       );
     });
   
