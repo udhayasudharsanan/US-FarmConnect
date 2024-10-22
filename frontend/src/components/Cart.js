@@ -26,10 +26,10 @@ export default function Cart() {
     socket.on('negotiationUpdated', (data) => {
       const { productId, newPrice } = data;
       setCart((prevCart) =>
-        prevCart.map(product => product._id === productId ? { ...product, price: newPrice } : product)
+        prevCart.map(item => item._id === productId ? { ...item, price: newPrice } : item)
       );
     });
-  
+
     return () => socket.off('negotiationUpdated');
   }, [setCart]);
   // Handle changes in negotiation message input
@@ -57,7 +57,7 @@ export default function Cart() {
       alert('Please provide both a message and a requested price.');
       return;
     }
-   
+
     console.log("Token:", token);  // Check if the token is retrieved
     try {
       // Ensure the token is available
@@ -65,7 +65,7 @@ export default function Cart() {
         alert('Authorization token is missing. Please log in again.');
         return;
       }
-      
+
       const response = await axios.post(
         `${API_URL}/api/negotiate`,
         { productId, farmerId, message, requestedPrice },  // Send farmerId along with the request
@@ -73,7 +73,7 @@ export default function Cart() {
           headers: { Authorization: `Bearer ${token}` },  // Ensure the token is passed in the headers
         }
       );
-  
+
       if (response.data.success) {
         alert('Negotiation request sent to the farmer.');
         // Clear the message and requested price after sending
@@ -97,32 +97,32 @@ export default function Cart() {
         <p>Your cart is empty</p>
       ) : (
         <ul>
-          {cart.map((product) => (
-  <li key={product._id}>
-    <h4>{product.productName || 'Product Name Missing'}</h4>
-    <p>Price: ${product.price}</p>
-    <p>Quantity: {product.quantity}</p>
-    {product.negotiationStatus === 'accepted' ? (
+          {cart.map((item) => (
+  <li key={item._id}>
+    <h4>{item.productName || 'Product Name Missing'}</h4>
+    <p>Price: ${item.price}</p>
+    <p>Quantity: {item.quantity}</p>
+    {item.negotiationStatus === 'accepted' ? (
       <p>Negotiation accepted, price updated.</p>
-    ) : product.quantity >= product.minQuantityForNegotiation ? (
+    ) : item.quantity >= item.minQuantityForNegotiation ? (
                 <div>
                   <textarea
           placeholder="Enter your negotiation message"
-          value={negotiationMessages[product._id] || ''}
-          onChange={(e) => handleNegotiationChange(e, product._id)}
+          value={negotiationMessages[item._id] || ''}
+          onChange={(e) => handleNegotiationChange(e, item._id)}
         />
                   <input
           type="number"
           placeholder="Enter your requested price"
-          value={requestedPrices[product._id] || ''}
-          onChange={(e) => handlePriceChange(e, product._id)}
+          value={requestedPrices[item._id] || ''}
+          onChange={(e) => handlePriceChange(e, item._id)}
         />
-                  <button onClick={() => sendNegotiation(product._id, product.farmer)}> {/* Pass farmerId */}
+                  <button onClick={() => sendNegotiation(item._id, item.farmer)}> {/* Pass farmerId */}
                     Send Negotiation
                   </button>
                 </div>
               ) : (
-                <p>{product.negotiationStatus === 'accepted' ? 'Negotiation accepted' : `Negotiation not available (min quantity for negotiation: ${product.minQuantityForNegotiation})`}</p>
+                <p>{item.negotiationStatus === 'accepted' ? 'Negotiation accepted' : `Negotiation not available (min quantity for negotiation: ${item.minQuantityForNegotiation})`}</p>
               )}
             </li>
           ))}
