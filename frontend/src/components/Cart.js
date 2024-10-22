@@ -26,7 +26,7 @@ export default function Cart() {
     socket.on('negotiationUpdated', (data) => {
       const { productId, newPrice } = data;
       setCart((prevCart) =>
-        prevCart.map(item => item._id === productId ? { ...item, price: newPrice } : item)
+        prevCart.map(product => product._id === productId ? { ...item, price: newPrice } : item)
       );
     });
   
@@ -97,14 +97,14 @@ export default function Cart() {
         <p>Your cart is empty</p>
       ) : (
         <ul>
-          {cart.map((item) => (
+          {cart.map((product) => (
   <li key={product._id}>
     <h4>{product.productName || 'Product Name Missing'}</h4>
     <p>Price: ${product.price}</p>
     <p>Quantity: {product.quantity}</p>
-    {item.negotiationStatus === 'accepted' ? (
+    {product.negotiationStatus === 'accepted' ? (
       <p>Negotiation accepted, price updated.</p>
-    ) : product.quantity >= item.minQuantityForNegotiation ? (
+    ) : product.quantity >= product.minQuantityForNegotiation ? (
                 <div>
                   <textarea
           placeholder="Enter your negotiation message"
