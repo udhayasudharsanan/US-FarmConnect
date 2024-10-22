@@ -109,15 +109,15 @@ export default function Cart() {
                   <textarea
           placeholder="Enter your negotiation message"
           value={negotiationMessages[item._id] || ''}
-          onChange={(e) => handleNegotiationChange(e, item._id)}
+          onChange={(e) => handleNegotiationChange(e, product._id)}
         />
                   <input
           type="number"
           placeholder="Enter your requested price"
           value={requestedPrices[item._id] || ''}
-          onChange={(e) => handlePriceChange(e, item._id)}
+          onChange={(e) => handlePriceChange(e, product._id)}
         />
-                  <button onClick={() => sendNegotiation(item._id, item.farmer)}> {/* Pass farmerId */}
+                  <button onClick={() => sendNegotiation(product._id, product.farmer)}> {/* Pass farmerId */}
                     Send Negotiation
                   </button>
                 </div>
