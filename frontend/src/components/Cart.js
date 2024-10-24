@@ -50,52 +50,67 @@ export default function Cart() {
 
   // Function to send negotiation request to the farmer
   const sendNegotiation = async (productId, farmerId) => {
-    const message = negotiationMessages[productId];
-    const requestedPrice = requestedPrices[productId];
-    const token = localStorage.getItem('token'); // Retrieve the token from localStorage
-    
-    // Log productId, farmerId, and token for debugging
-    console.log("Product ID:", productId);  
-    console.log("Farmer ID:", farmerId);
-    console.log("Token:", token);
-    
-    if (!message || !requestedPrice) {
-      alert('Please provide both a message and a requested price.');
+  const message = negotiationMessages[productId];
+  const requestedPrice = requestedPrices[productId];
+  const token = localStorage.getItem('token'); // Retrieve the token from localStorage
+  
+  // Log productId, farmerId, and token for debugging
+  console.log("Product ID:", productId);  
+  console.log("Farmer ID:", farmerId);
+  console.log("Token:", token);
+
+  // Check if negotiation message and requested price are set
+  if (!message || !requestedPrice) {
+    alert('Please provide both a message and a requested price.');
+    return;
+  }
+
+  try {
+    // Ensure the token is available
+    if (!token) {
+      alert('Authorization token is missing. Please log in again.');
       return;
     }
 
-    console.log("Token:", token);  // Check if the token is retrieved
-    try {
-      // Ensure the token is available
-      if (!token) {
-        alert('Authorization token is missing. Please log in again.');
-        return;
+    const response = await axios.post(
+      `${API_URL}/api/negotiate`,
+      { productId, farmerId, message, requestedPrice },  // Send farmerId along with the request
+      {
+        headers: { Authorization: `Bearer ${token}` },  // Ensure the token is passed in the headers
       }
+    );
 
-      
-      const response = await axios.post(
-        `${API_URL}/api/negotiate`,
-        { productId, farmerId, message, requestedPrice },  // Send farmerId along with the request
-        {
-          headers: { Authorization: `Bearer ${token}` },  // Ensure the token is passed in the headers
-        }
-      );
-
-      if (response.data.success) {
-        alert('Negotiation request sent to the farmer.');
-        // Clear the message and requested price after sending
-        setNegotiationMessages((prev) => ({ ...prev, [productId]: '' }));
-        setRequestedPrices((prev) => ({ ...prev, [productId]: '' }));
-        fetchUpdatedCart(); // Fetch the updated cart after negotiation
-      } else {
-        alert('Failed to send negotiation request. Please try again.');
-      }
-    } catch (error) {
-      console.error('Error sending negotiation message:', error);
-      alert('Error sending negotiation request. Please check your network and try again.');
-      console.error("Error:", error.response ? error.response.data : error.message);
+    if (response.data.success) {
+      alert('Negotiation request sent to the farmer.');
+      // Clear the message and requested price after sending
+      setNegotiationMessages((prev) => ({ ...prev, [productId]: '' }));
+      setRequestedPrices((prev) => ({ ...prev, [productId]: '' }));
+      fetchUpdatedCart(); // Fetch the updated cart after negotiation
+    } else {
+      alert('Failed to send negotiation request. Please try again.');
     }
-  };
+  } catch (error) {
+    // Log the error response for more details
+    console.error('Error sending negotiation request:', error);
+
+    if (error.response) {
+      // Log server error details
+      console.error("Error Data:", error.response.data);
+      console.error("Status Code:", error.response.status);
+      console.error("Headers:", error.response.headers);
+
+      alert(`Error: ${error.response.data.message || 'Failed to send negotiation request'}`);
+    } else if (error.request) {
+      // The request was made but no response was received
+      console.error("No Response Received:", error.request);
+      alert('No response received from the server. Please check your network connection.');
+    } else {
+      // Something else happened in setting up the request
+      console.error("Request Setup Error:", error.message);
+      alert(`Request error: ${error.message}`);
+    }
+  }
+};
 
     return (
     <div>
