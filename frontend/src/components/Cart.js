@@ -66,12 +66,6 @@ export default function Cart() {
         return;
       }
 
-      console.log({
-    productId: product.id, // Ensure the correct product ID is being passed
-    message: 'I would like to negotiate the price for this product.',
-    requestedPrice: 150,
-});
-
       
       const response = await axios.post(
         `${API_URL}/api/negotiate`,
