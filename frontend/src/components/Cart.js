@@ -4,7 +4,7 @@ import axios from 'axios';
 import socket from '../socket'; // Assuming socket setup
 
 export default function Cart() {
-  const { cart, setCart } = useCartContext(); // Add setCart to update the cart state
+  const { cart, setCart } = useCart(); // Add setCart to update the cart state
   const [negotiationMessages, setNegotiationMessages] = useState({});
   const [requestedPrices, setRequestedPrices] = useState({});
   const token = localStorage.getItem('token'); // Retrieve the token from localStorage
@@ -53,6 +53,12 @@ export default function Cart() {
     const message = negotiationMessages[productId];
     const requestedPrice = requestedPrices[productId];
     const token = localStorage.getItem('token'); // Retrieve the token from localStorage
+    
+    // Log productId, farmerId, and token for debugging
+    console.log("Product ID:", productId);  
+    console.log("Farmer ID:", farmerId);
+    console.log("Token:", token);
+    
     if (!message || !requestedPrice) {
       alert('Please provide both a message and a requested price.');
       return;
