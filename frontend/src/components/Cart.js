@@ -90,7 +90,7 @@ export default function Cart() {
     }
   };
 
-  return (
+    return (
     <div>
       <h2>Your Cart</h2>
       {cart.length === 0 ? (
@@ -98,31 +98,29 @@ export default function Cart() {
       ) : (
         <ul>
           {cart.map((item) => (
-  <li key={item._id}>
-    <h4>{item.productName || 'Product Name Missing'}</h4>
-    <p>Price: ${item.price}</p>
-    <p>Quantity: {item.quantity}</p>
-    {item.negotiationStatus === 'accepted' ? (
-      <p>Negotiation accepted, price updated.</p>
-    ) : item.quantity >= item.minQuantityForNegotiation ? (
+            <li key={item._id}>
+              <h4>{item.productName || 'Product Name Missing'}</h4>
+              <p>Price: ${item.price}</p>
+              <p>Quantity: {item.quantity}</p>
+              {item.negotiationStatus === 'accepted' ? (
+                <p>Negotiation accepted, price updated.</p>
+              ) : item.quantity >= item.minQuantityForNegotiation ? (
                 <div>
                   <textarea
-          placeholder="Enter your negotiation message"
-          value={negotiationMessages[item._id] || ''}
-          onChange={(e) => handleNegotiationChange(e, item._id)}
-        />
+                    placeholder="Enter your negotiation message"
+                    value={negotiationMessages[item._id] || ''}
+                    onChange={(e) => handleNegotiationChange(e, item._id)}
+                  />
                   <input
-          type="number"
-          placeholder="Enter your requested price"
-          value={requestedPrices[item._id] || ''}
-          onChange={(e) => handlePriceChange(e, item._id)}
-        />
-                  <button onClick={() => sendNegotiation(item._id, item.farmer)}> {/* Pass farmerId */}
-                    Send Negotiation
-                  </button>
+                    type="number"
+                    placeholder="Enter your requested price"
+                    value={requestedPrices[item._id] || ''}
+                    onChange={(e) => handlePriceChange(e, item._id)}
+                  />
+                  <button onClick={() => sendNegotiation(item._id, item.farmer)}>Send Negotiation</button>
                 </div>
               ) : (
-                <p>{item.negotiationStatus === 'accepted' ? 'Negotiation accepted' : `Negotiation not available (min quantity for negotiation: ${item.minQuantityForNegotiation})`}</p>
+                <p>{`Negotiation not available (min quantity for negotiation: ${item.minQuantityForNegotiation})`}</p>
               )}
             </li>
           ))}
