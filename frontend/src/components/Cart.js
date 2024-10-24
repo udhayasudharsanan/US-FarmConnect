@@ -4,7 +4,7 @@ import axios from 'axios';
 import socket from '../socket'; // Assuming socket setup
 
 export default function Cart() {
-  const { cart, setCart } = useCart(); // Add setCart to update the cart state
+  const { cart, setCart } = useCartContext(); // Add setCart to update the cart state
   const [negotiationMessages, setNegotiationMessages] = useState({});
   const [requestedPrices, setRequestedPrices] = useState({});
   const token = localStorage.getItem('token'); // Retrieve the token from localStorage
