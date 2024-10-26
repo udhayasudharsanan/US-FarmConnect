@@ -49,15 +49,11 @@ export default function Cart() {
   };
 
   // Function to send negotiation request to the farmer
-  const sendNegotiation = async (productId, farmerId) => {
+  // Send negotiation request to the farmer
+const sendNegotiation = async (productId, farmerId) => {
   const message = negotiationMessages[productId];
   const requestedPrice = requestedPrices[productId];
   const token = localStorage.getItem('token'); // Retrieve the token from localStorage
-  
-  // Log productId, farmerId, and token for debugging
-  console.log("Product ID:", productId);  
-  console.log("Farmer ID:", farmerId);
-  console.log("Token:", token);
 
   // Check if negotiation message and requested price are set
   if (!message || !requestedPrice) {
@@ -72,45 +68,54 @@ export default function Cart() {
       return;
     }
 
+    // Log productId, farmerId, and token for debugging
+    console.log("Product ID:", productId);
+    console.log("Farmer ID:", farmerId);
+    console.log("Message:", message);
+    console.log("Requested Price:", requestedPrice);
+    console.log("Token:", token);
+
+    // Send the negotiation request
     const response = await axios.post(
       `${API_URL}/api/negotiate`,
-      { productId, farmerId, message, requestedPrice },  // Send farmerId along with the request
+      { productId, farmerId, message, requestedPrice },
       {
-        headers: { Authorization: `Bearer ${token}` },  // Ensure the token is passed in the headers
+        headers: { Authorization: `Bearer ${token}` }, // Pass token in headers
       }
     );
 
     if (response.data.success) {
       alert('Negotiation request sent to the farmer.');
-      // Clear the message and requested price after sending
+      // Clear message and requested price fields after sending
       setNegotiationMessages((prev) => ({ ...prev, [productId]: '' }));
       setRequestedPrices((prev) => ({ ...prev, [productId]: '' }));
-      fetchUpdatedCart(); // Fetch the updated cart after negotiation
+      fetchUpdatedCart(); // Fetch updated cart after negotiation
     } else {
       alert('Failed to send negotiation request. Please try again.');
     }
   } catch (error) {
-    // Log the error response for more details
+    // Log error details
     console.error('Error sending negotiation request:', error);
 
     if (error.response) {
-      // Log server error details
+      // Log server response errors
       console.error("Error Data:", error.response.data);
       console.error("Status Code:", error.response.status);
       console.error("Headers:", error.response.headers);
 
       alert(`Error: ${error.response.data.message || 'Failed to send negotiation request'}`);
     } else if (error.request) {
-      // The request was made but no response was received
+      // The request was made but no response received
       console.error("No Response Received:", error.request);
       alert('No response received from the server. Please check your network connection.');
     } else {
-      // Something else happened in setting up the request
+      // Other errors
       console.error("Request Setup Error:", error.message);
       alert(`Request error: ${error.message}`);
     }
   }
 };
+
 
     return (
     <div>
