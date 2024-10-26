@@ -26,7 +26,7 @@ export default function Cart() {
     socket.on('negotiationUpdated', (data) => {
       const { productId, newPrice } = data;
       setCart((prevCart) =>
-        prevCart.map(item => item._id === productId ? { ...item, price: newPrice } : item)
+        prevCart.map(item => item.product_id === productId ? { ...item, price: newPrice } : item)
       );
     });
 
@@ -125,7 +125,7 @@ const sendNegotiation = async (productId, farmerId) => {
       ) : (
         <ul>
           {cart.map((item) => (
-            <li key={item._id}>
+            <li key={item.product_id}>
               <h4>{item.productName || 'Product Name Missing'}</h4>
               <p>Price: ${item.price}</p>
               <p>Quantity: {item.quantity}</p>
@@ -135,16 +135,16 @@ const sendNegotiation = async (productId, farmerId) => {
                 <div>
                   <textarea
                     placeholder="Enter your negotiation message"
-                    value={negotiationMessages[item._id] || ''}
-                    onChange={(e) => handleNegotiationChange(e, item._id)}
+                    value={negotiationMessages[item.product_id] || ''}
+                    onChange={(e) => handleNegotiationChange(e, item.product_id)}
                   />
                   <input
                     type="number"
                     placeholder="Enter your requested price"
-                    value={requestedPrices[item._id] || ''}
-                    onChange={(e) => handlePriceChange(e, item._id)}
+                    value={requestedPrices[item.product_id] || ''}
+                    onChange={(e) => handlePriceChange(e, item.product_id)}
                   />
-                  <button onClick={() => sendNegotiation(item._id, item.farmer)}>Send Negotiation</button>
+                  <button onClick={() => sendNegotiation(item.product_id, item.farmer)}>Send Negotiation</button>
                 </div>
               ) : (
                 <p>{`Negotiation not available (min quantity for negotiation: ${item.minQuantityForNegotiation})`}</p>
