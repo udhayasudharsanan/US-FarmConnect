@@ -69,7 +69,7 @@ const sendNegotiation = async (productId, farmerId) => {
     }
 
     // Log productId, farmerId, and token for debugging
-    console.log("Product ID:", productId);
+    console.log("Product ID:", process.env.productId);
     console.log("Farmer ID:", farmerId);
     console.log("Message:", message);
     console.log("Requested Price:", requestedPrice);
