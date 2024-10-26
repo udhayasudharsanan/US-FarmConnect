@@ -152,4 +152,3 @@ export default function Cart() {
     </div>
   );
 }
-export default Cart;
