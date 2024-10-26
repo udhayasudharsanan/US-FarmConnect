@@ -34,13 +34,13 @@ router.post('/', auth, async (req, res) => {
       message,
       requestedPrice,
       status: 'pending',
-      console.log("Received data in backend:");
+    });
+    console.log("Received data in backend:");
   console.log("Product ID:", productId);
   console.log("Customer ID:", customerId);
   console.log("Farmer ID:", farmerId);
   console.log("Message:", message);
   console.log("Requested Price:", requestedPrice);
-    });
 
     await negotiation.save();
     res.status(200).json({ success: true, negotiation });
