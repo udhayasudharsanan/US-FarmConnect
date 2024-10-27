@@ -26,7 +26,7 @@ export default function Cart() {
     socket.on('negotiationUpdated', (data) => {
       const { productId, newPrice } = data;
       setCart((prevCart) =>
-        prevCart.map(item => item.product_id === productId ? { ...item, price: newPrice } : item)
+        prevCart.map(item => item._id === productId ? { ...item, price: newPrice } : item)
       );
     });
 
@@ -125,26 +125,26 @@ const sendNegotiation = async (productId, farmerId) => {
       ) : (
         <ul>
           {cart.map((item) => (
-            <li key={item.product_id}>
-              <h4>{item.productName || 'Product Name Missing'}</h4>
-              <p>Price: ${item.price}</p>
-              <p>Quantity: {item.quantity}</p>
+            <li key={item._id}>
+              <h4>{item.productId.Name || 'Product Name Missing'}</h4>
+              <p>Price: ${item.productId.price}</p>
+              <p>Quantity: {item.productId.quantity}</p>
               {item.negotiationStatus === 'accepted' ? (
                 <p>Negotiation accepted, price updated.</p>
-              ) : item.quantity >= item.minQuantityForNegotiation ? (
+              ) : item.productId.quantity >= item.minQuantityForNegotiation ? (
                 <div>
                   <textarea
                     placeholder="Enter your negotiation message"
-                    value={negotiationMessages[item.product_id] || ''}
-                    onChange={(e) => handleNegotiationChange(e, item.product_id)}
+                    value={negotiationMessages[item.productId._id] || ''}
+                    onChange={(e) => handleNegotiationChange(e, item.productId._id)}
                   />
                   <input
                     type="number"
                     placeholder="Enter your requested price"
-                    value={requestedPrices[item.product_id] || ''}
-                    onChange={(e) => handlePriceChange(e, item.product_id)}
+                    value={requestedPrices[item.productId._id] || ''}
+                    onChange={(e) => handlePriceChange(e, item.productId._id)}
                   />
-                  <button onClick={() => sendNegotiation(item.product_id, item.farmer)}>Send Negotiation</button>
+                  <button onClick={() => sendNegotiation(item.productId._id, item.farmer)}>Send Negotiation</button>
                 </div>
               ) : (
                 <p>{`Negotiation not available (min quantity for negotiation: ${item.minQuantityForNegotiation})`}</p>
