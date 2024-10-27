@@ -126,12 +126,12 @@ const sendNegotiation = async (productId, farmerId) => {
         <ul>
           {cart.map((item) => (
             <li key={item._id}>
-              <h4>{item.productId.Name || 'Product Name Missing'}</h4>
-              <p>Price: ${item.productId.price}</p>
-              <p>Quantity: {item.productId.quantity}</p>
+              <h4>{item.Name || 'Product Name Missing'}</h4>
+              <p>Price: ${item.price}</p>
+              <p>Quantity: {item.quantity}</p>
               {item.negotiationStatus === 'accepted' ? (
                 <p>Negotiation accepted, price updated.</p>
-              ) : item.productId.quantity >= item.minQuantityForNegotiation ? (
+              ) : item.quantity >= item.minQuantityForNegotiation ? (
                 <div>
                   <textarea
                     placeholder="Enter your negotiation message"
