@@ -4,26 +4,28 @@ import axios from 'axios';
 import socket from '../socket'; // Assuming socket setup
 
 export default function Cart() {
-  const { cart, setCart } = useCart(); // Add setCart to update the cart state
+  const { cart, setCart } = useCart(); // Cart context
   const [negotiationMessages, setNegotiationMessages] = useState({});
   const [requestedPrices, setRequestedPrices] = useState({});
-  const token = localStorage.getItem('token'); // Retrieve the token from localStorage
+  const token = localStorage.getItem('token');
   const API_URL = process.env.REACT_APP_BACKEND_URL || 'https://us-farmconnect.onrender.com';
-  const productId = yourProductObject._id; // Ensure this is populated correctly
 
-  // Fetch updated cart data after login or negotiation (if needed)
-  const fetchUpdatedCart = async () => {
-    try {
-      const response = await axios.get(`${API_URL}/api/cart`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setCart(response.data.cart); // Update cart with fetched data
-    } catch (error) {
-      console.error('Error fetching updated cart:', error);
-    }
-  };
+  // Fetch updated cart data on mount or after negotiation
+  useEffect(() => {
+    const fetchUpdatedCart = async () => {
+      try {
+        const response = await axios.get(`${API_URL}/api/cart`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setCart(response.data.cart);
+      } catch (error) {
+        console.error('Error fetching cart:', error);
+      }
+    };
+    fetchUpdatedCart();
+  }, [setCart, token, API_URL]);
 
-  // Listen for negotiation updates from the farmer
+  // Socket listener for negotiation updates from the farmer
   useEffect(() => {
     socket.on('negotiationUpdated', (data) => {
       const { productId, newPrice } = data;
@@ -31,95 +33,50 @@ export default function Cart() {
         prevCart.map(item => item._id === productId ? { ...item, price: newPrice } : item)
       );
     });
-
     return () => socket.off('negotiationUpdated');
   }, [setCart]);
-  // Handle changes in negotiation message input
-  const handleNegotiationChange = (e, productId) => {
-    setNegotiationMessages({
-      ...negotiationMessages,
-      [productId]: e.target.value,
-    });
+
+  // Update negotiation message
+  const handleNegotiationChange = (e, itemId) => {
+    setNegotiationMessages(prev => ({ ...prev, [itemId]: e.target.value }));
   };
 
-  // Handle changes in requested price input
-  const handlePriceChange = (e, productId) => {
-    setRequestedPrices({
-      ...requestedPrices,
-      [productId]: e.target.value,
-    });
+  // Update requested price
+  const handlePriceChange = (e, itemId) => {
+    setRequestedPrices(prev => ({ ...prev, [itemId]: e.target.value }));
   };
 
-  // Function to send negotiation request to the farmer
   // Send negotiation request to the farmer
-const sendNegotiation = async (productId, farmerId) => {
-  const message = negotiationMessages[productId];
-  const requestedPrice = requestedPrices[productId];
-  const token = localStorage.getItem('token'); // Retrieve the token from localStorage
+  const sendNegotiation = async (itemId, farmerId) => {
+    const message = negotiationMessages[itemId];
+    const requestedPrice = requestedPrices[itemId];
 
-  // Check if negotiation message and requested price are set
-  if (!message || !requestedPrice) {
-    alert('Please provide both a message and a requested price.');
-    return;
-  }
-
-  try {
-    // Ensure the token is available
-    if (!token) {
-      alert('Authorization token is missing. Please log in again.');
+    if (!message || !requestedPrice) {
+      alert('Please provide both a message and requested price.');
       return;
     }
 
-    // Log productId, farmerId, and token for debugging
-    console.log("Product ID:", process.env.productId);
-    console.log("Farmer ID:", farmerId);
-    console.log("Message:", message);
-    console.log("Requested Price:", requestedPrice);
-    console.log("Token:", token);
+    try {
+      const response = await axios.post(
+        `${API_URL}/api/negotiate`,
+        { productId: itemId, farmerId, message, requestedPrice },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
 
-    // Send the negotiation request
-    const response = await axios.post(
-      `${API_URL}/api/negotiate`,
-      { productId, farmerId, message, requestedPrice },
-      {
-        headers: { Authorization: `Bearer ${token}` }, // Pass token in headers
+      if (response.data.success) {
+        alert('Negotiation request sent.');
+        setNegotiationMessages(prev => ({ ...prev, [itemId]: '' }));
+        setRequestedPrices(prev => ({ ...prev, [itemId]: '' }));
+      } else {
+        alert('Failed to send negotiation.');
       }
-    );
-
-    if (response.data.success) {
-      alert('Negotiation request sent to the farmer.');
-      // Clear message and requested price fields after sending
-      setNegotiationMessages((prev) => ({ ...prev, [productId]: '' }));
-      setRequestedPrices((prev) => ({ ...prev, [productId]: '' }));
-      fetchUpdatedCart(); // Fetch updated cart after negotiation
-    } else {
-      alert('Failed to send negotiation request. Please try again.');
+    } catch (error) {
+      console.error('Error sending negotiation:', error);
+      alert('Error sending negotiation.');
     }
-  } catch (error) {
-    // Log error details
-    console.error('Error sending negotiation request:', error);
+  };
 
-    if (error.response) {
-      // Log server response errors
-      console.error("Error Data:", error.response.data);
-      console.error("Status Code:", error.response.status);
-      console.error("Headers:", error.response.headers);
-
-      alert(`Error: ${error.response.data.message || 'Failed to send negotiation request'}`);
-    } else if (error.request) {
-      // The request was made but no response received
-      console.error("No Response Received:", error.request);
-      alert('No response received from the server. Please check your network connection.');
-    } else {
-      // Other errors
-      console.error("Request Setup Error:", error.message);
-      alert(`Request error: ${error.message}`);
-    }
-  }
-};
-
-
-    return (
+  return (
     <div>
       <h2>Your Cart</h2>
       {cart.length === 0 ? (
@@ -136,20 +93,22 @@ const sendNegotiation = async (productId, farmerId) => {
               ) : item.quantity >= item.minQuantityForNegotiation ? (
                 <div>
                   <textarea
-                    placeholder="Enter your negotiation message"
+                    placeholder="Enter negotiation message"
                     value={negotiationMessages[item._id] || ''}
                     onChange={(e) => handleNegotiationChange(e, item._id)}
                   />
                   <input
                     type="number"
-                    placeholder="Enter your requested price"
+                    placeholder="Enter requested price"
                     value={requestedPrices[item._id] || ''}
                     onChange={(e) => handlePriceChange(e, item._id)}
                   />
-                  <button onClick={() => sendNegotiation(item._id, item.farmer)}>Send Negotiation</button>
+                  <button onClick={() => sendNegotiation(item._id, item.farmer)}>
+                    Send Negotiation
+                  </button>
                 </div>
               ) : (
-                <p>{`Negotiation not available (min quantity for negotiation: ${item.minQuantityForNegotiation})`}</p>
+                <p>Negotiation not available (minimum quantity: {item.minQuantityForNegotiation})</p>
               )}
             </li>
           ))}
