@@ -12,6 +12,9 @@ router.post('/', auth, async (req, res) => {
   const { productId, message, requestedPrice } = req.body;
   // Ensure customerId is correctly set from req.user
   const customerId = req.user.userId; // This should match how you're setting it in the auth middleware
+   // Log productId and customerId for debugging
+  console.log("Received productId in frontend request:", productId);
+  console.log("CustomerId from auth:", customerId);
 
   if (!customerId) {
     return res.status(400).json({ success: false, message: 'Customer ID is required' });
