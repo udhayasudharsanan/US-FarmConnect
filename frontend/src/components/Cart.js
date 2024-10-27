@@ -126,7 +126,7 @@ const sendNegotiation = async (productId, farmerId) => {
         <ul>
           {cart.map((item) => (
             <li key={item._id}>
-              <h4>{item.Name || 'Product Name Missing'}</h4>
+              <h4>{item.productName || 'Product Name Missing'}</h4>
               <p>Price: ${item.price}</p>
               <p>Quantity: {item.quantity}</p>
               {item.negotiationStatus === 'accepted' ? (
