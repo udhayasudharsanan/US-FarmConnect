@@ -9,6 +9,8 @@ export default function Cart() {
   const [requestedPrices, setRequestedPrices] = useState({});
   const token = localStorage.getItem('token'); // Retrieve the token from localStorage
   const API_URL = process.env.REACT_APP_BACKEND_URL || 'https://us-farmconnect.onrender.com';
+  const productId = yourProductObject._id; // Ensure this is populated correctly
+
   // Fetch updated cart data after login or negotiation (if needed)
   const fetchUpdatedCart = async () => {
     try {
