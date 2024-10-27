@@ -135,16 +135,16 @@ const sendNegotiation = async (productId, farmerId) => {
                 <div>
                   <textarea
                     placeholder="Enter your negotiation message"
-                    value={negotiationMessages[item.productId._id] || ''}
-                    onChange={(e) => handleNegotiationChange(e, item.productId._id)}
+                    value={negotiationMessages[item._id] || ''}
+                    onChange={(e) => handleNegotiationChange(e, item._id)}
                   />
                   <input
                     type="number"
                     placeholder="Enter your requested price"
-                    value={requestedPrices[item.productId._id] || ''}
-                    onChange={(e) => handlePriceChange(e, item.productId._id)}
+                    value={requestedPrices[item._id] || ''}
+                    onChange={(e) => handlePriceChange(e, item._id)}
                   />
-                  <button onClick={() => sendNegotiation(item.productId._id, item.farmer)}>Send Negotiation</button>
+                  <button onClick={() => sendNegotiation(item._id, item.farmer)}>Send Negotiation</button>
                 </div>
               ) : (
                 <p>{`Negotiation not available (min quantity for negotiation: ${item.minQuantityForNegotiation})`}</p>
