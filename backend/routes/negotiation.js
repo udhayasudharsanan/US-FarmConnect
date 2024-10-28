@@ -15,6 +15,8 @@ router.post('/', auth, async (req, res) => {
    // Log productId and customerId for debugging
   console.log("Received productId in frontend request:", productId);
   console.log("CustomerId from auth:", customerId);
+  console.log("Sending negotiation with", { productId: itemId, farmerId, message, requestedPrice });
+
 
   if (!customerId) {
     return res.status(400).json({ success: false, message: 'Customer ID is required' });
