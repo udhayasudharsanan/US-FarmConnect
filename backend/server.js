@@ -52,8 +52,8 @@ app.use('/api/support', require('./routes/support'));
 // app.use('/api/messages', require('./routes/message')); // Add this line to include the message routes
 app.use('/uploads', express.static('uploads'));
 app.use('/api/payment', require('./routes/payment'));
-app.use('/api/negotiate', negotiationRoutes);
-app.use('/api/cart', cartRoutes);
+app.use('/api/negotiate', require('./routes/negotiation'));
+app.use('/api/cart', require('./routes/Cart'));
 
 
 // Real-time connection with Socket.io
