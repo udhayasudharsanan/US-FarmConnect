@@ -14,14 +14,6 @@ dotenv.config();
 
 const app = express();
 const server = http.createServer(app);
-// Socket.IO with CORS configuration
-const io = socketIo(server, {
-    cors: {
-        origin: 'https://us-farm-connect.vercel.app', // Your deployed frontend URL
-        methods: ['GET', 'POST'],
-        credentials: true,
-    }
-});
 
 // CORS configuration for Express
 const corsOptions = {
@@ -33,6 +25,7 @@ const corsOptions = {
 
 // Use CORS middleware
 app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 app.use(express.json());
 // app.use(express.static('uploads'));
 
@@ -52,8 +45,18 @@ app.use('/api/support', require('./routes/support'));
 // app.use('/api/messages', require('./routes/message')); // Add this line to include the message routes
 app.use('/uploads', express.static('uploads'));
 app.use('/api/payment', require('./routes/payment'));
-app.use('/api/negotiate', require('./routes/negotiation'));
-app.use('/api/cart', require('./routes/Cart'));
+app.use('/api/negotiate', negotiationRoutes);
+app.use('/api/cart',cartRoutes);
+
+// Socket.IO with CORS configuration
+const io = socketIo(server, {
+    cors: {
+        origin: 'https://us-farm-connect.vercel.app', // Your deployed frontend URL
+        methods: ['GET', 'POST'],
+        credentials: true,
+    }
+});
+
 
 
 // Real-time connection with Socket.io
