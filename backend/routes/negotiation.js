@@ -8,7 +8,7 @@ const Cart = require('../models/Cart');
 
 
 // Route to create a negotiation request from the customer
-router.post('/negotiate', auth, async (req, res) => {
+router.post('/', auth, async (req, res) => {
   const { productId, message, requestedPrice } = req.body;
   // Ensure customerId is correctly set from req.user
   const customerId = req.user.userId; // This should match how you're setting it in the auth middleware
