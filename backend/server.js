@@ -7,6 +7,7 @@ const socketIo = require('socket.io');
 const Support = require('./models/Support');
 const negotiationRoutes = require('./routes/negotiation');
 const cartRoutes = require('./routes/Cart');
+const uploadRoutes = require('./routes/uploadRoutes');
 const productRoutes = require('./routes/product');
 const supportRoutes = require('./routes/support');
 dotenv.config();
@@ -47,6 +48,7 @@ app.use('/uploads', express.static('uploads'));
 app.use('/api/payment', require('./routes/payment'));
 app.use('/api/negotiate', negotiationRoutes);
 app.use('/api/cart',cartRoutes);
+app.use('/api', uploadRoutes);
 
 // Socket.IO with CORS configuration
 const io = socketIo(server, {
