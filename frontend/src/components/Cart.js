@@ -96,7 +96,7 @@ export default function Cart() {
       ) : (
         <ul>
           {cart.map((item) => (
-  <li key={item.product_id}>
+  <li key={item.productId}>
     <h4>{item.productName || 'Product Name Missing'}</h4>
     <p>Price: ${item.price}</p>
     <p>Quantity: {item.quantity}</p>
@@ -106,16 +106,16 @@ export default function Cart() {
                 <div>
                   <textarea
           placeholder="Enter your negotiation message"
-          value={negotiationMessages[item._id] || ''}
-          onChange={(e) => handleNegotiationChange(e, item._id)}
+          value={negotiationMessages[item.productId] || ''}
+          onChange={(e) => handleNegotiationChange(e, item.productId)}
         />
                   <input
           type="number"
           placeholder="Enter your requested price"
-          value={requestedPrices[item._id] || ''}
-          onChange={(e) => handlePriceChange(e, item._id)}
+          value={requestedPrices[item.productId] || ''}
+          onChange={(e) => handlePriceChange(e, item.productId)}
         />
-                  <button onClick={() => sendNegotiation(item._id, item.farmer)}> {/* Pass farmerId */}
+                  <button onClick={() => sendNegotiation(item.productId, item.farmer)}> {/* Pass farmerId */}
                     Send Negotiation
                   </button>
                 </div>
