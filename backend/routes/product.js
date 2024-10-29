@@ -5,15 +5,16 @@ const authMiddleware = require('../middleware/authMiddleware');
 const router = express.Router();
 
 // Configure multer for image uploads
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'uploads/'); // Ensure this directory exists
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + '-' + file.originalname);
-  }
+// Configure Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
 });
-const upload = multer({ storage: storage });
+
+// Configure multer for image uploads (no local storage needed)
+const storage = multer.memoryStorage(); // Store images in memory
+const upload = multer({ storage: storage })
 
 
 
