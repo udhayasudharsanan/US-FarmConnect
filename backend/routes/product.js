@@ -1,6 +1,7 @@
 const express = require('express');
 const multer = require('multer');
 const Product = require('../models/Product');
+const cloudinary = require('cloudinary').v2;
 const authMiddleware = require('../middleware/authMiddleware');
 const router = express.Router();
 
