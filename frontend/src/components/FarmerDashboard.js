@@ -116,7 +116,7 @@ const FarmerDashboard = ({ farmerId }) => {
   if (image) {
     const formData = new FormData();
     formData.append('file', image);
-    formData.append('upload_preset', ml_default); // Replace with your Cloudinary preset
+    formData.append('upload_preset', "ml_default"); // Replace with your Cloudinary preset
 
     try {
       const cloudinaryResponse = await axios.post(
