@@ -106,35 +106,59 @@ const FarmerDashboard = ({ farmerId }) => {
     return () => socket.off('productAdded');
   }, []);
 
-  const handleAddProduct = async (e) => {
-    e.preventDefault();
+ const handleAddProduct = async (e) => {
+  e.preventDefault();
 
+  const token = localStorage.getItem('token'); // Get token from local storage
+
+  // Upload image to Cloudinary if an image is selected
+  let imageUrl = '';
+  if (image) {
     const formData = new FormData();
-    formData.append('name', name);
-    formData.append('price', price);
-    formData.append('quantity', quantity);
-    formData.append('minQuantityForNegotiation', minQuantityForNegotiation);
-    formData.append('image', image); // Ensure this is a File object
-
-    const token = localStorage.getItem('token'); // Get token from local storage
+    formData.append('file', image);
+    formData.append('upload_preset', 'your_upload_preset'); // Replace with your Cloudinary preset
 
     try {
-      await axios.post(`${API_URL}/api/products/add`, formData, {
-        headers: {
-          Authorization: `Bearer ${token}`, // Add the token in the headers
-        },
-      });
-      // Reset fields after successful addition
-      setName('');
-      setPrice('');
-      setQuantity('');
-      setMinQuantityForNegotiation('');
-      setImage(null); // Clear image
+      const cloudinaryResponse = await axios.post(
+        `https://api.cloudinary.com/v1_1/de7coyhov/image/upload`,
+        formData
+      );
+      imageUrl = cloudinaryResponse.data.secure_url; // Get the URL from Cloudinary response
     } catch (error) {
-      console.error('Error adding product:', error);
-      alert('Error adding product. Please try again.');
+      console.error('Error uploading to Cloudinary:', error);
+      alert('Error uploading image. Please try again.');
+      return;
     }
+  }
+
+  // Prepare product data, using the Cloudinary URL for the image
+  const productData = {
+    name,
+    price,
+    quantity,
+    minQuantityForNegotiation,
+    image: imageUrl, // Use Cloudinary URL here
   };
+
+  try {
+    // Send the product data to the backend
+    await axios.post(`${API_URL}/api/products/add`, productData, {
+      headers: {
+        Authorization: `Bearer ${token}`, // Add the token in the headers
+      },
+    });
+    // Reset fields after successful addition
+    setName('');
+    setPrice('');
+    setQuantity('');
+    setMinQuantityForNegotiation('');
+    setImage(null); // Clear image
+  } catch (error) {
+    console.error('Error adding product:', error);
+    alert('Error adding product. Please try again.');
+  }
+};
+
 
   const handleProductSelect = (productId) => {
     setSelectedProductId(productId); // Set the selected product ID for chat
