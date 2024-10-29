@@ -28,7 +28,7 @@ router.post('/add', [authMiddleware, upload.single('image')], async (req, res) =
 
   try {
     // Validate the incoming request data
-    if (!name || !price || !quantity || !minQuantityForNegotiation || !req.file) {
+    if (!name || !price || !quantity || !minQuantityForNegotiation ) {
       return res.status(400).json({ msg: 'All fields are required' });
     }
     console.log("Farmer ID:", req.user.userId);
