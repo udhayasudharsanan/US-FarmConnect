@@ -38,7 +38,7 @@ router.post('/add', [authMiddleware, upload.single('image')], async (req, res) =
       price,
       quantity,
       minQuantityForNegotiation,
-      image: req.file.path, // Path to the uploaded image
+      image: imageUrl , // Path to the uploaded image
       farmer: req.user.userId // Set farmer's ID from the authenticated user
     });
 
