@@ -3,6 +3,7 @@ const multer = require('multer');
 const Product = require('../models/Product');
 const cloudinary = require('cloudinary').v2;
 const authMiddleware = require('../middleware/authMiddleware');
+require('dotenv').config();
 const router = express.Router();
 
 // Configure multer for image uploads
