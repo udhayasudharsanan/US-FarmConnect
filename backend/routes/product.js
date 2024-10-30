@@ -23,53 +23,51 @@ const upload = multer({ storage: storage })
 
 
 // POST route for adding a product
+// POST route for adding a product
 router.post('/add', [authMiddleware, upload.single('image')], async (req, res) => {
-  const { name, price, quantity, minQuantityForNegotiation } = req.body;
-  const image = req.file ? req.file.path : null; // Assuming you are using multer for image uploads
-
+  const { name, price, quantity, minQuantityForNegotiation, image } = req.body;
+  
   try {
     // Validate the incoming request data
-    if (!name || !price || !quantity || !minQuantityForNegotiation ) {
+    if (!name || !price || !quantity || !minQuantityForNegotiation) {
       return res.status(400).json({ msg: 'All fields are required' });
     }
-    console.log("Farmer ID:", req.user.userId);
     
-         let imageUrl = '';
-    if (req.file) {
-         try {
-        const uploadResult = await new Promise((resolve, reject) => {
-          cloudinary.uploader.upload_stream(
-            { resource_type: 'image' },
-            (error, result) => {
-              if (error) reject(error);
-              else resolve(result);
-            }
-          ).end(req.file.buffer);
-        });
-        imageUrl = uploadResult.secure_url;
-      } catch (err) {
-        console.error('Cloudinary upload error:', err);
-        return res.status(500).json({ msg: 'Image upload failed. Please try again.' });
-      }
+    let imageUrl = image; // Use provided URL if available
+
+    // Only upload to Cloudinary if no URL is provided and a file is uploaded
+    if (!imageUrl && req.file) {
+      const uploadResult = await new Promise((resolve, reject) => {
+        cloudinary.uploader.upload_stream(
+          { resource_type: 'image' },
+          (error, result) => {
+            if (error) reject(error);
+            else resolve(result);
+          }
+        ).end(req.file.buffer);
+      });
+
+      imageUrl = uploadResult.secure_url;
     }
 
     if (!imageUrl) {
       return res.status(400).json({ msg: 'Image upload failed. Please try again.' });
     }
+
     // Create new product instance
     const newProduct = new Product({
       name,
       price,
       quantity,
       minQuantityForNegotiation,
-      image: imageUrl , // Path to the uploaded image
-      farmer: req.user.userId // Set farmer's ID from the authenticated user
+      image: imageUrl,
+      farmer: req.user.userId
     });
 
     await newProduct.save();
     res.status(201).json(newProduct);
   } catch (error) {
-    console.error('Error adding product:', error); // Log the error for debugging
+    console.error('Error adding product:', error);
     res.status(500).json({ message: 'Internal Server Error', error });
   }
 });
