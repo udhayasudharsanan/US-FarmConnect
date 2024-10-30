@@ -111,7 +111,7 @@ const CustomerDashboard = () => {
           products.map(product => (
             <div className="col-md-4 mb-4" key={product._id}>
               <div className="card h-100">
-                <img src={`${API_URL}/${product.image}`} alt={product.name} style={{ width: '100px', height: 'auto' }} />
+                <img src={product.image} alt={product.name} style={{ width: '100px', height: 'auto' }} />
                 <div className="card-body d-flex flex-column">
                   <h5 className="card-title">{product.name}</h5>
                   <p className="card-text">Price: ${product.price}</p>
