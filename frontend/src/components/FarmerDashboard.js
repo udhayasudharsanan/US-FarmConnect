@@ -239,7 +239,7 @@ const FarmerDashboard = ({ farmerId }) => {
         {products.map(product => (
           <div key={product._id} className="col-md-4">
             <div className="card mb-4" onClick={() => handleProductSelect(product._id)}>
-              <img src={`${API_URL}/uploads/${product.image}`} className="card-img-top" alt={product.name} />
+              <img src={product.image} className="card-img-top" alt={product.name} />
               <div className="card-body">
                 <h5 className="card-title">{product.name}</h5>
                 <p className="card-text">Price: ${product.price}</p>
