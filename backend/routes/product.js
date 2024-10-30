@@ -36,20 +36,23 @@ router.post('/add', [authMiddleware, upload.single('image')], async (req, res) =
     
          let imageUrl = '';
     if (req.file) {
-      const uploadResult = await new Promise((resolve, reject) => {
-        cloudinary.uploader.upload_stream(
-          { resource_type: 'image' },
-          (error, result) => {
-            if (error) reject(error);
-            else resolve(result);
-          }
-        ).end(req.file.buffer);
-      });
-
-      imageUrl = uploadResult.secure_url; // Get the URL from the Cloudinary response
+         try {
+        const uploadResult = await new Promise((resolve, reject) => {
+          cloudinary.uploader.upload_stream(
+            { resource_type: 'image' },
+            (error, result) => {
+              if (error) reject(error);
+              else resolve(result);
+            }
+          ).end(req.file.buffer);
+        });
+        imageUrl = uploadResult.secure_url;
+      } catch (err) {
+        console.error('Cloudinary upload error:', err);
+        return res.status(500).json({ msg: 'Image upload failed. Please try again.' });
+      }
     }
 
-    // Ensure that imageUrl is not empty before proceeding
     if (!imageUrl) {
       return res.status(400).json({ msg: 'Image upload failed. Please try again.' });
     }
