@@ -25,6 +25,7 @@ const upload = multer({ storage: storage })
 // POST route for adding a product
 router.post('/add', [authMiddleware, upload.single('image')], async (req, res) => {
   const { name, price, quantity, minQuantityForNegotiation } = req.body;
+  const image = req.file ? req.file.path : null; // Assuming you are using multer for image uploads
 
   try {
     // Validate the incoming request data
