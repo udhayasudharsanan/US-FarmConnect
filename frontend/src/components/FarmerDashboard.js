@@ -105,25 +105,29 @@ const FarmerDashboard = ({ farmerId }) => {
 
     return () => socket.off('productAdded');
   }, []);
-
- const handleAddProduct = async (e) => {
+const handleAddProduct = async (e) => {
   e.preventDefault();
 
   const token = localStorage.getItem('token'); // Get token from local storage
 
+  const formData = new FormData(); // Create a new FormData object
+  formData.append('name', name);
+  formData.append('price', price);
+  formData.append('quantity', quantity);
+  formData.append('minQuantityForNegotiation', minQuantityForNegotiation);
+
   // Upload image to Cloudinary if an image is selected
-  let imageUrl = '';
   if (image) {
-    const formData = new FormData();
-    formData.append('file', image);
-    formData.append('upload_preset', "ml_default"); // Replace with your Cloudinary preset
+    const imageFormData = new FormData();
+    imageFormData.append('file', image);
+    imageFormData.append('upload_preset', "ml_default"); // Replace with your Cloudinary preset
 
     try {
       const cloudinaryResponse = await axios.post(
         `https://api.cloudinary.com/v1_1/de7coyhov/image/upload`,
-        formData
+        imageFormData
       );
-      imageUrl = cloudinaryResponse.data.secure_url; // Get the URL from Cloudinary response
+      formData.append('image', cloudinaryResponse.data.secure_url); // Use Cloudinary URL here
     } catch (error) {
       console.error('Error uploading to Cloudinary:', error);
       alert('Error uploading image. Please try again.');
@@ -131,18 +135,9 @@ const FarmerDashboard = ({ farmerId }) => {
     }
   }
 
-  // Prepare product data, using the Cloudinary URL for the image
-  const productData = {
-    name,
-    price,
-    quantity,
-    minQuantityForNegotiation,
-    image: imageUrl, // Use Cloudinary URL here
-  };
-
   try {
     // Send the product data to the backend
-    await axios.post(`${API_URL}/api/products/add`, productData, {
+    await axios.post(`${API_URL}/api/products/add`, formData, {
       headers: {
         Authorization: `Bearer ${token}`, // Add the token in the headers
       },
