@@ -116,23 +116,12 @@ const handleAddProduct = async (e) => {
   formData.append('quantity', quantity);
   formData.append('minQuantityForNegotiation', minQuantityForNegotiation);
 
-  // Upload image to Cloudinary if an image is selected
+  // Append the image file directly to the FormData
   if (image) {
-    const imageFormData = new FormData();
-    imageFormData.append('file', image);
-    imageFormData.append('upload_preset', "ml_default"); // Replace with your Cloudinary preset
-
-    try {
-      const cloudinaryResponse = await axios.post(
-        `https://api.cloudinary.com/v1_1/de7coyhov/image/upload`,
-        imageFormData
-      );
-      formData.append('image', cloudinaryResponse.data.secure_url); // Use Cloudinary URL here
-    } catch (error) {
-      console.error('Error uploading to Cloudinary:', error);
-      alert('Error uploading image. Please try again.');
-      return;
-    }
+    formData.append('image', image); // Attach the file directly
+  } else {
+    alert("Please select an image to upload.");
+    return;
   }
 
   try {
@@ -140,20 +129,22 @@ const handleAddProduct = async (e) => {
     await axios.post(`${API_URL}/api/products/add`, formData, {
       headers: {
         Authorization: `Bearer ${token}`, // Add the token in the headers
+        "Content-Type": "multipart/form-data", // Set content type for file upload
       },
     });
+    
     // Reset fields after successful addition
     setName('');
     setPrice('');
     setQuantity('');
     setMinQuantityForNegotiation('');
     setImage(null); // Clear image
+    alert('Product added successfully!');
   } catch (error) {
     console.error('Error adding product:', error);
     alert('Error adding product. Please try again.');
   }
 };
-
 
   const handleProductSelect = (productId) => {
     setSelectedProductId(productId); // Set the selected product ID for chat
