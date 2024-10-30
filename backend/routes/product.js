@@ -33,18 +33,24 @@ router.post('/add', [authMiddleware, upload.single('image')], async (req, res) =
     }
     console.log("Farmer ID:", req.user.userId);
     
-     // Upload image to Cloudinary if image file exists
-    let imageUrl = '';
+         let imageUrl = '';
     if (req.file) {
-      const result = await cloudinary.uploader.upload_stream({
-        resource_type: 'image'
-      }, (error, result) => {
-        if (error) {
-          console.error('Error uploading to Cloudinary:', error);
-          return res.status(500).json({ message: 'Image upload failed', error });
-        }
-        imageUrl = result.secure_url;
-      }).end(req.file.buffer);
+      const uploadResult = await new Promise((resolve, reject) => {
+        cloudinary.uploader.upload_stream(
+          { resource_type: 'image' },
+          (error, result) => {
+            if (error) reject(error);
+            else resolve(result);
+          }
+        ).end(req.file.buffer);
+      });
+
+      imageUrl = uploadResult.secure_url; // Get the URL from the Cloudinary response
+    }
+
+    // Ensure that imageUrl is not empty before proceeding
+    if (!imageUrl) {
+      return res.status(400).json({ msg: 'Image upload failed. Please try again.' });
     }
     // Create new product instance
     const newProduct = new Product({
