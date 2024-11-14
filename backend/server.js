@@ -10,6 +10,7 @@ const cartRoutes = require('./routes/Cart');
 const uploadRoutes = require('./routes/uploadRoutes');
 const productRoutes = require('./routes/product');
 const supportRoutes = require('./routes/support');
+const orderRoutes = require('./routes/order');
 dotenv.config();
 
 
@@ -49,6 +50,7 @@ app.use('/api/payment', require('./routes/payment'));
 app.use('/api/negotiate', negotiationRoutes);
 app.use('/api/cart',cartRoutes);
 app.use('/api', uploadRoutes);
+app.use('/api/order', orderRoutes);
 
 // Socket.IO with CORS configuration
 const io = socketIo(server, {
