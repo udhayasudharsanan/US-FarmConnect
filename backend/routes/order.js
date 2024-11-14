@@ -31,4 +31,42 @@ router.post('/placeOrder', async (req, res) => {
   }
 });
 
+// Update Order Status
+router.put('/order/:id/status', async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  try {
+    const order = await Order.findByIdAndUpdate(id, { status }, { new: true });
+    res.status(200).json(order);
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// Get Customer Orders
+router.get('/customer/orders', async (req, res) => {
+  const { userId } = req.query;
+
+  try {
+    const orders = await Order.find({ userId }).populate('items.productId', 'name');
+    res.status(200).json(orders);
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// Get Farmer Orders
+router.get('/farmer/orders', async (req, res) => {
+  const { farmerId } = req.query;
+
+  try {
+    const orders = await Order.find({ farmerId }).populate('items.productId', 'name');
+    res.status(200).json(orders);
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+
 module.exports = router;
