@@ -7,6 +7,9 @@ export default function Cart() {
   const { cart, setCart } = useCart(); // Add setCart to update the cart state
   const [negotiationMessages, setNegotiationMessages] = useState({});
   const [requestedPrices, setRequestedPrices] = useState({});
+  const [address, setAddress] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [orderSuccess, setOrderSuccess] = useState(false);
   const token = localStorage.getItem('token'); // Retrieve the token from localStorage
   const API_URL = process.env.REACT_APP_BACKEND_URL || 'https://us-farmconnect.onrender.com';
   // Fetch updated cart data after login or negotiation (if needed)
@@ -87,6 +90,34 @@ export default function Cart() {
       alert('Error sending negotiation request. Please check your network and try again.');
     }
   };
+
+  const handleCheckout = async () => {
+    setLoading(true);
+
+    const orderItems = cart.map(item => ({
+      productId: item.product._id,
+      quantity: item.quantity,
+      price: item.negotiatedPrice || item.product.price,
+    }));
+
+    try {
+      const response = await axios.post('/api/order/checkout', {
+        items: orderItems,
+        address,
+        paymentMethod: 'COD', // Cash on Delivery
+      });
+
+      if (response.data.success) {
+        setCart([]); // Clear cart after successful order
+        setOrderSuccess(true);
+      }
+    } catch (error) {
+      console.error('Error during checkout:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
 
   return (
     <div>
