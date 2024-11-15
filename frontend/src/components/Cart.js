@@ -15,14 +15,7 @@ export default function Cart() {
   const token = localStorage.getItem('token'); // Retrieve the token from localStorage
   const API_URL = process.env.REACT_APP_BACKEND_URL || 'https://us-farmconnect.onrender.com';
   // Fetch updated cart data after login or negotiation (if needed)
-  let customerId = null;
-
-if (token) {
-  const decodedToken = jwtDecode(token);
-  customerId = decodedToken.customerId; // Ensure 'customerId' exists in your JWT payload
-} else {
-  console.error('Token not found in localStorage');
-}
+  
 
 
   
