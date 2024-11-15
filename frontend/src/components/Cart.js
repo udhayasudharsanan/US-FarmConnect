@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useCart } from '../context/CartContext';
 import axios from 'axios';
-import jwtDecode from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
 import socket from '../socket'; // Assuming socket setup
 
