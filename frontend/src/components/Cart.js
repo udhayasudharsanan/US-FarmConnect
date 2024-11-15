@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useCart } from '../context/CartContext';
 import axios from 'axios';
+import jwtDecode from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
 import socket from '../socket'; // Assuming socket setup
 
@@ -15,6 +16,17 @@ export default function Cart() {
   const token = localStorage.getItem('token'); // Retrieve the token from localStorage
   const API_URL = process.env.REACT_APP_BACKEND_URL || 'https://us-farmconnect.onrender.com';
   // Fetch updated cart data after login or negotiation (if needed)
+  let customerId = null;
+
+if (token) {
+  const decodedToken = jwtDecode(token);
+  customerId = decodedToken.customerId; // Ensure 'customerId' exists in your JWT payload
+} else {
+  console.error('Token not found in localStorage');
+}
+
+
+  
   const fetchUpdatedCart = async () => {
     try {
       const response = await axios.get(`${API_URL}/api/cart`, {
