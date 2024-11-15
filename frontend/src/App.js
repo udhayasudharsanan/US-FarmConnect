@@ -15,13 +15,8 @@ import { CartProvider } from './context/CartContext'; // Import CartProvider
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'; // Import bootstrap JS
 import 'bootstrap/dist/css/bootstrap.min.css';      // Import bootstrap CSS
 
-const App = () => {
-  // Get token from localStorage
-  const token = localStorage.getItem('token');
-  let customerId = null;
-
   // Decode token if it's available and extract customerId
-onst App = () => {
+const App = () => {
   const token = localStorage.getItem('token');
   let customerId = null;
 
