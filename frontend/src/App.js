@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
-import jwtDecode from 'jwt-decode';
+import { decode as jwtDecode } from 'jwt-decode';
 import LoginForm from './components/LoginForm';
 import SignupForm from './components/SignupForm';
 import AdminDashboard from './components/AdminDashboard';
@@ -21,8 +21,12 @@ const App = () => {
   let customerId = null;
 
   if (token) {
-    const decodedToken = jwtDecode(token);
-    customerId = decodedToken.customerId; // Extract customerId from the token payload
+    try {
+      const decodedToken = jwtDecode(token); // Use the named import
+      customerId = decodedToken.customerId; // Extract customerId from the token payload
+    } catch (error) {
+      console.error('Error decoding token:', error);
+    }
   }
   return (
     <CartProvider>
