@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useCart } from '../context/CartContext';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import socket from '../socket'; // Assuming socket setup
 
 export default function Cart() {
