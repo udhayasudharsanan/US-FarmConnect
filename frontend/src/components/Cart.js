@@ -4,6 +4,17 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import socket from '../socket'; // Assuming socket setup
 
+const decodeToken = (token) => {
+  try {
+    const payload = token.split('.')[1]; // Extract the payload part
+    const decodedPayload = atob(payload); // Decode the base64-encoded payload
+    return JSON.parse(decodedPayload); // Convert JSON string to object
+  } catch (error) {
+    console.error('Error decoding token:', error);
+    return null;
+  }
+};
+
 export default function Cart() {
   const { cart, setCart , checkout } = useCart(); // Add setCart to update the cart state
   const [negotiationMessages, setNegotiationMessages] = useState({});
@@ -103,6 +114,11 @@ const handleCheckout = async () => {
       return;
     }
 
+    if (!customerId) {
+      alert('Customer ID is missing. Please log in again.');
+      return;
+    }
+
     const result = await checkout(customerId, address);
 
     if (result.success) {
@@ -111,7 +127,7 @@ const handleCheckout = async () => {
       alert('Failed to place order. Please try again.');
       console.error(result.error);
     }
-  };
+  };;
 
   return (
     <div>
