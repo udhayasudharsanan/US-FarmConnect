@@ -25,7 +25,7 @@ export default function Cart() {
   const navigate = useNavigate();
   const token = localStorage.getItem('token'); // Retrieve the token from localStorage
   const API_URL = process.env.REACT_APP_BACKEND_URL || 'https://us-farmconnect.onrender.com';
-  const customerId = localStorage.getItem('customerId'); // or from context
+  const userId = localStorage.getItem('userId'); // or from context
 
   // Fetch updated cart data after login or negotiation (if needed)
   
@@ -116,12 +116,12 @@ const handleCheckout = async () => {
       return;
     }
 
-    if (!customerId) {
+    if (!userId) {
       alert('Customer ID is missing. Please log in again.');
       return;
     }
 
-    const result = await checkout(customerId, address);
+    const result = await checkout(userId, address);
 
     if (result.success) {
       alert(`Order placed successfully! Order ID: ${result.orderId}`);
