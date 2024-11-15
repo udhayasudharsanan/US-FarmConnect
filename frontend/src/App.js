@@ -8,6 +8,7 @@ import CustomerDashboard from './components/CustomerDashboard';
 import SupportChat from './components/SupportChat';
 import MessagesPage from './components/MessagesPage';
 import Cart from './components/Cart';
+import OrderTracking from './components/OrderTracking';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { CartProvider } from './context/CartContext'; // Import CartProvider
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'; // Import bootstrap JS
@@ -25,6 +26,8 @@ const App = () => {
         <Route path="/support" element={<SupportChat />} />
         <Route path="/messages" element={<MessagesPage />} /> {/* Corrected */}
         <Route path="/cart" element={<Cart />} /> {/* Corrected */}
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/orders" element={<OrderTracking />} /> 
       </Routes>
     </CartProvider>
   );
