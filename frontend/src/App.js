@@ -38,7 +38,6 @@ const App = () => {
         <Route path="/customer-dashboard" element={<CustomerDashboard />} />
         <Route path="/support" element={<SupportChat />} />
         <Route path="/messages" element={<MessagesPage />} />
-        <Route path="/cart" element={<Cart />} />
         <Route path="/cart" element={<Cart customerId={customerId} />} />
         {/* Pass customerId to OrderTracking component */}
         <Route path="/orders" element={<OrderTracking customerId={customerId} />} />
