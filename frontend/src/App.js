@@ -1,6 +1,5 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
-import jwtDecode from 'jwt-decode';
 import LoginForm from './components/LoginForm';
 import SignupForm from './components/SignupForm';
 import AdminDashboard from './components/AdminDashboard';
@@ -20,14 +19,28 @@ const App = () => {
   const token = localStorage.getItem('token');
   let customerId = null;
 
-  if (token) {
-    try {
-      const decodedToken = jwtDecode(token); // Use the named import
-      customerId = decodedToken.customerId; // Extract customerId from the token payload
-    } catch (error) {
-      console.error('Error decoding token:', error);
-    }
+// Helper function to decode JWT token manually
+const decodeToken = (token) => {
+  try {
+    const payload = token.split('.')[1]; // Extract the payload part
+    const decodedPayload = atob(payload); // Decode the base64-encoded payload
+    return JSON.parse(decodedPayload); // Convert JSON string to object
+  } catch (error) {
+    console.error('Error decoding token:', error);
+    return null;
   }
+};
+
+// Decode token if it's available and extract customerId
+const App = () => {
+  const token = localStorage.getItem('token');
+  let customerId = null;
+
+  if (token) {
+    const decodedToken = decodeToken(token); // Use manual decoding function
+    customerId = decodedToken?.customerId || null; // Extract customerId from the payload
+  }
+  
   return (
     <CartProvider>
       <Routes>
@@ -39,7 +52,6 @@ const App = () => {
         <Route path="/support" element={<SupportChat />} />
         <Route path="/messages" element={<MessagesPage />} />
         <Route path="/cart" element={<Cart customerId={customerId} />} />
-        {/* Pass customerId to OrderTracking component */}
         <Route path="/orders" element={<OrderTracking customerId={customerId} />} />
       </Routes>
     </CartProvider>
