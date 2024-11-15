@@ -10,6 +10,8 @@ export default function Cart() {
   const [address, setAddress] = useState('');
   const [loading, setLoading] = useState(false);
   const [orderSuccess, setOrderSuccess] = useState(false);
+  const [customerAddress, setCustomerAddress] = useState('');
+  const navigate = useNavigate();
   const token = localStorage.getItem('token'); // Retrieve the token from localStorage
   const API_URL = process.env.REACT_APP_BACKEND_URL || 'https://us-farmconnect.onrender.com';
   // Fetch updated cart data after login or negotiation (if needed)
@@ -157,7 +159,17 @@ export default function Cart() {
           ))}
         </ul>
       )}
-      <button className="btn btn-primary">Proceed to Checkout</button>
+      <div>
+        <h3>Enter Address</h3>
+        <input
+          type="text"
+          value={customerAddress}
+          onChange={(e) => setCustomerAddress(e.target.value)}
+          placeholder="Enter delivery address"
+          className="form-control mb-3"
+        />
+        <button className="btn btn-primary" onClick={handleCheckout}>Proceed to Checkout</button>
+      </div>
     </div>
   );
-}
+};
