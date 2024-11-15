@@ -5,8 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import socket from '../socket'; // Assuming socket setup
 
 export default function Cart() {
-  const { cart, setCart } = useCart(); // Add setCart to update the cart state
-  const { cart, checkout } = useCart()
+  const { cart, setCart , checkout } = useCart(); // Add setCart to update the cart state
   const [negotiationMessages, setNegotiationMessages] = useState({});
   const [requestedPrices, setRequestedPrices] = useState({});
   const [address, setAddress] = useState('');
