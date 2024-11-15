@@ -115,7 +115,7 @@ const handleCheckout = async () => {
       alert('Please enter an address.');
       return;
     }
-    const customerId = req.user.userId;
+    const customerId = user.userId;
 
     if (!customerId) {
       alert('Customer ID is missing. Please log in again.');
