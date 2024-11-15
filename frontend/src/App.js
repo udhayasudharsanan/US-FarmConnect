@@ -1,5 +1,6 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
+import jwtDecode from 'jwt-decode'; // Import jwt-decode for token decoding
 import LoginForm from './components/LoginForm';
 import SignupForm from './components/SignupForm';
 import AdminDashboard from './components/AdminDashboard';
@@ -15,6 +16,20 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js'; // Import bootstrap JS
 import 'bootstrap/dist/css/bootstrap.min.css';      // Import bootstrap CSS
 
 const App = () => {
+  // Get token from localStorage
+  const token = localStorage.getItem('token');
+  let customerId = null;
+
+  // Decode token if it's available and extract customerId
+  if (token) {
+    try {
+      const decodedToken = jwtDecode(token);
+      customerId = decodedToken.userId || decodedToken.customerId; // Assuming customerId or userId is present in the token
+    } catch (error) {
+      console.error('Invalid token:', error);
+    }
+  }
+
   return (
     <CartProvider>
       <Routes>
@@ -24,14 +39,13 @@ const App = () => {
         <Route path="/farmer-dashboard" element={<FarmerDashboard />} />
         <Route path="/customer-dashboard" element={<CustomerDashboard />} />
         <Route path="/support" element={<SupportChat />} />
-        <Route path="/messages" element={<MessagesPage />} /> {/* Corrected */}
-        <Route path="/cart" element={<Cart />} /> {/* Corrected */}
+        <Route path="/messages" element={<MessagesPage />} />
         <Route path="/cart" element={<Cart />} />
-        <Route path="/orders" element={<OrderTracking customerId={customerId} />} /> 
+        {/* Pass customerId to OrderTracking component */}
+        <Route path="/orders" element={<OrderTracking customerId={customerId} />} />
       </Routes>
     </CartProvider>
   );
 };
 
 export default App;
-
