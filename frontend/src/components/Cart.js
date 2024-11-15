@@ -11,7 +11,6 @@ export default function Cart() {
   const [address, setAddress] = useState('');
   const [loading, setLoading] = useState(false);
   const [orderSuccess, setOrderSuccess] = useState(false);
-  const [Address, setAddress] = useState('');
   const navigate = useNavigate();
   const token = localStorage.getItem('token'); // Retrieve the token from localStorage
   const API_URL = process.env.REACT_APP_BACKEND_URL || 'https://us-farmconnect.onrender.com';
@@ -154,7 +153,7 @@ const handleCheckout = async () => {
           type="text"
           placeholder="Enter shipping address"
           value={address}
-          onChange={(e) => setCustomerAddress(e.target.value)}
+          onChange={(e) => setAddress(e.target.value)}
           className="form-control mb-3"
         />
         <button className="btn btn-primary" onClick={handleCheckout}>Proceed to Checkout</button>
