@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { decode as jwtDecode } from 'jwt-decode';
+import jwtDecode from 'jwt-decode';
 import LoginForm from './components/LoginForm';
 import SignupForm from './components/SignupForm';
 import AdminDashboard from './components/AdminDashboard';
