@@ -1,17 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
-const OrderTracking = () => {
+const OrderTracking = ({ customerId }) => {
   const [orders, setOrders] = useState([]);
-  
+
   useEffect(() => {
     const fetchOrders = async () => {
-      const response = await fetch(`/api/order/customer/orders?userId=${currentUser._id}`);
-      const ordersData = await response.json();
-      setOrders(ordersData);
+      if (customerId) { // Check if customerId is provided
+        try {
+          const response = await fetch(`/api/order/customer/orders?userId=${customerId}`);
+          const ordersData = await response.json();
+          setOrders(ordersData);
+        } catch (error) {
+          console.error("Error fetching orders:", error);
+        }
+      }
     };
 
     fetchOrders();
-  }, []);
+  }, [customerId]);
 
   return (
     <div>
@@ -23,9 +29,7 @@ const OrderTracking = () => {
           <p>Address: {order.address}</p>
           <ul>
             {order.items.map(item => (
-              <li key={item.productId._id}>
-                {item.productId.name} - Qty: {item.quantity}
-              </li>
+              <li key={item.productId._id}>{item.productId.name} - Qty: {item.quantity}</li>
             ))}
           </ul>
         </div>
