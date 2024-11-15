@@ -11,7 +11,7 @@ export default function Cart() {
   const [address, setAddress] = useState('');
   const [loading, setLoading] = useState(false);
   const [orderSuccess, setOrderSuccess] = useState(false);
-  const [customerAddress, setCustomerAddress] = useState('');
+  const [Address, setAddress] = useState('');
   const navigate = useNavigate();
   const token = localStorage.getItem('token'); // Retrieve the token from localStorage
   const API_URL = process.env.REACT_APP_BACKEND_URL || 'https://us-farmconnect.onrender.com';
@@ -95,11 +95,18 @@ export default function Cart() {
   };
 
 const handleCheckout = async () => {
-    const result = await checkout(customerId, customerAddress);
+    if (!address) {
+      alert('Please enter an address.');
+      return;
+    }
+
+    const result = await checkout(customerId, address);
+
     if (result.success) {
-      navigate('/orders');
+      alert(`Order placed successfully! Order ID: ${result.orderId}`);
     } else {
-      console.error("Checkout error:", result.error);
+      alert('Failed to place order. Please try again.');
+      console.error(result.error);
     }
   };
 
@@ -145,9 +152,9 @@ const handleCheckout = async () => {
         <h3>Enter Address</h3>
         <input
           type="text"
-          value={customerAddress}
+          placeholder="Enter shipping address"
+          value={address}
           onChange={(e) => setCustomerAddress(e.target.value)}
-          placeholder="Enter delivery address"
           className="form-control mb-3"
         />
         <button className="btn btn-primary" onClick={handleCheckout}>Proceed to Checkout</button>
