@@ -72,8 +72,34 @@ const addToCart = (product) => {
     });
   };
 
+  const checkout = async (customerId, customerAddress) => {
+  try {
+    const orderData = {
+      userId: customerId,  // using the passed customerId
+      items: cart,
+      address: customerAddress,
+    };
+
+    const response = await axios.post(`${API_URL}/api/order/placeOrder`, orderData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (response.data.success) {
+      // Clear cart on successful checkout
+      setCart([]);
+      return { success: true, orderId: response.data.order._id };
+    }
+  } catch (error) {
+    console.error('Checkout failed:', error);
+    return { success: false, error };
+  }
+};
+
+  
   return (
-    <CartContext.Provider value={{ cart, addToCart, updateProductPrice }}>
+    <CartContext.Provider value={{ cart, addToCart, updateProductPrice,checkout }}>
       {children}
     </CartContext.Provider>
   );
