@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { decode } from 'jwt-decode';
+import jwtDecode from 'jwt-decode';
 import LoginForm from './components/LoginForm';
 import SignupForm from './components/SignupForm';
 import AdminDashboard from './components/AdminDashboard';
@@ -21,15 +21,14 @@ const App = () => {
   let customerId = null;
 
   // Decode token if it's available and extract customerId
-  if (token) {
-    try {
-      const decodedToken = jwtDecode(token);
-      customerId = decodedToken.userId || decodedToken.customerId; // Assuming customerId or userId is present in the token
-    } catch (error) {
-      console.error('Invalid token:', error);
-    }
-  }
+onst App = () => {
+  const token = localStorage.getItem('token');
+  let customerId = null;
 
+  if (token) {
+    const decodedToken = jwtDecode(token);
+    customerId = decodedToken.customerId; // Extract customerId from the token payload
+  }
   return (
     <CartProvider>
       <Routes>
@@ -41,6 +40,7 @@ const App = () => {
         <Route path="/support" element={<SupportChat />} />
         <Route path="/messages" element={<MessagesPage />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/cart" element={<Cart customerId={customerId} />} />
         {/* Pass customerId to OrderTracking component */}
         <Route path="/orders" element={<OrderTracking customerId={customerId} />} />
       </Routes>
