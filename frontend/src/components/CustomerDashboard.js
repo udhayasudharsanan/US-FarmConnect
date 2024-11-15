@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useCart } from '../context/CartContext'; // Import useCart from CartContext
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import socket from '../socket'; // Assuming socket setup
 
 const CustomerDashboard = () => {
@@ -93,6 +94,9 @@ const CustomerDashboard = () => {
     <div className="container">
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <a className="navbar-brand" href="/">US FARM</a>
+     <Link to="/orders" className="btn btn-secondary">
+  Track Your Orders
+</Link>
         
         <div className="ml-auto">
           <button className="btn btn-outline-success ml-2" onClick={() => navigate('/cart')}>
