@@ -94,32 +94,40 @@ export default function Cart() {
     }
   };
 
-  const handleCheckout = async () => {
-    setLoading(true);
+const handleCheckout = async () => {
+  // Ensure cart items have the required structure
+  const validCartItems = cart.filter(item => item && item.product);
 
-    const orderItems = cart.map(item => ({
+  if (validCartItems.length === 0) {
+    console.error("Cart is empty or items are not correctly structured.");
+    return;
+  }
+
+  const orderData = {
+    userId: customerId,  // Use customerId if currentUser is unavailable
+    farmerId: validCartItems[0].product.farmerId, // example - adjust as needed
+    items: validCartItems.map(item => ({
       productId: item.product._id,
       quantity: item.quantity,
-      price: item.negotiatedPrice || item.product.price,
-    }));
-
-    try {
-      const response = await axios.post('/api/order/checkout', {
-        items: orderItems,
-        address,
-        paymentMethod: 'COD', // Cash on Delivery
-      });
-
-      if (response.data.success) {
-        setCart([]); // Clear cart after successful order
-        setOrderSuccess(true);
-      }
-    } catch (error) {
-      console.error('Error during checkout:', error);
-    } finally {
-      setLoading(false);
-    }
+      price: item.price
+    })),
+    address: customerAddress,
   };
+
+  try {
+    const response = await fetch('/api/order/placeOrder', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(orderData),
+    });
+    const data = await response.json();
+    if (data.success) {
+      navigate('/orders');
+    }
+  } catch (error) {
+    console.error('Checkout failed:', error);
+  }
+};
 
 
   return (
