@@ -14,11 +14,6 @@ import { CartProvider } from './context/CartContext'; // Import CartProvider
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'; // Import bootstrap JS
 import 'bootstrap/dist/css/bootstrap.min.css';      // Import bootstrap CSS
 
-  // Decode token if it's available and extract customerId
-const App = () => {
-  const token = localStorage.getItem('token');
-  let customerId = null;
-
 // Helper function to decode JWT token manually
 const decodeToken = (token) => {
   try {
@@ -40,7 +35,7 @@ const App = () => {
     const decodedToken = decodeToken(token); // Use manual decoding function
     customerId = decodedToken?.customerId || null; // Extract customerId from the payload
   }
-  
+
   return (
     <CartProvider>
       <Routes>
