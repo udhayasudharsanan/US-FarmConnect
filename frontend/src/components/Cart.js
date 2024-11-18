@@ -25,7 +25,6 @@ export default function Cart() {
   const navigate = useNavigate();
   const token = localStorage.getItem('token'); // Retrieve the token from localStorage
   const API_URL = process.env.REACT_APP_BACKEND_URL || 'https://us-farmconnect.onrender.com';
-  const customerId = localStorage.getItem('user.userId'); // or from context
 
   // Fetch updated cart data after login or negotiation (if needed)
   
