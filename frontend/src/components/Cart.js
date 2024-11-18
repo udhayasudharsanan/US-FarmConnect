@@ -11,7 +11,7 @@ export default function Cart() {
   const [address, setAddress] = useState('');
   const [loading, setLoading] = useState(false);
   const [orderSuccess, setOrderSuccess] = useState(false);
-  const [userId, setUserId] = useState(null); // To store the userId
+  const [customerId, setCustomerId] = useState(null); // To store the userId
   const navigate = useNavigate();
   const token = localStorage.getItem('token'); // Retrieve the token from localStorage
   const API_URL = process.env.REACT_APP_BACKEND_URL || 'https://us-farmconnect.onrender.com';
