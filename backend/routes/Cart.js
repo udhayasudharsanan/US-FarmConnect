@@ -17,6 +17,20 @@ router.get('/', auth, async (req, res) => {
   }
 });
 
+
+router.get('/me', auth, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.userId); // req.user.userId comes from the auth middleware
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+    res.status(200).json({ success: true, user });
+  } catch (error) {
+    console.error('Error fetching user:', error);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
   
   /* router.get('/cart', auth, async (req, res) => {
     const customerId = req.user.userId;
