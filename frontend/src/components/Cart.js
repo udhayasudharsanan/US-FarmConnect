@@ -20,13 +20,13 @@ export default function Cart() {
   
     // Fetch userId when the component mounts
   useEffect(() => {
-    const fetchUserId = async () => {
+    const fetchCustomerId = async () => {
       try {
         const response = await axios.get(`${API_URL}/api/cart/me`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (response.data.success) {
-          setCustomerId(response.data.user._id); // Assuming _id is the userId
+          setCustomerId(response.data.user.userId); // Assuming _id is the userId
         }
       } catch (error) {
         console.error('Error fetching userId:', error);
@@ -34,7 +34,7 @@ export default function Cart() {
     };
 
     if (token) {
-      fetchUserId();
+      fetchCustomerId();
     }
   }, [token]);
 
