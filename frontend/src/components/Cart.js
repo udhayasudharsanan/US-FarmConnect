@@ -11,13 +11,32 @@ export default function Cart() {
   const [address, setAddress] = useState('');
   const [loading, setLoading] = useState(false);
   const [orderSuccess, setOrderSuccess] = useState(false);
+  const [userId, setUserId] = useState(null); // To store the userId
   const navigate = useNavigate();
   const token = localStorage.getItem('token'); // Retrieve the token from localStorage
   const API_URL = process.env.REACT_APP_BACKEND_URL || 'https://us-farmconnect.onrender.com';
 
   // Fetch updated cart data after login or negotiation (if needed)
   
+    // Fetch userId when the component mounts
+  useEffect(() => {
+    const fetchUserId = async () => {
+      try {
+        const response = await axios.get(`${API_URL}/api/cart/me`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (response.data.success) {
+          setCustomerId(response.data.user._id); // Assuming _id is the userId
+        }
+      } catch (error) {
+        console.error('Error fetching userId:', error);
+      }
+    };
 
+    if (token) {
+      fetchUserId();
+    }
+  }, [token]);
 
   
   const fetchUpdatedCart = async () => {
